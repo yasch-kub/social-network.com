@@ -40,12 +40,18 @@ $(document).ready(function() {
         }
     });
 
+    jQuery.validator.addMethod("fullname", function(value, element) {
+        return $('#reg_fullname').val().split(' ').length == 2;
+    }, 'Input name and surname');
+
     // Register Form
     //----------------------------------------------
     // Validation
     $("#register-form").validate({
         rules: {
-            reg_username: "required",
+            reg_fullname: {
+                fullname: true,
+            },
             reg_password: {
                 required: true,
                 minlength: 5
@@ -53,13 +59,24 @@ $(document).ready(function() {
             reg_password_confirm: {
                 required: true,
                 minlength: 5,
-                equalTo: "#register-form [name=reg_password]"
+                equalTo: "#register-form [name=password]"
             },
             reg_email: {
                 required: true,
                 email: true
             },
             reg_agree: "required",
+        },
+        messages: {
+            reg_password: {
+                required: 'Input password',
+            },
+            reg_email: {
+                required: 'Input email',
+            },
+            reg_agree: {
+                required: 'Please read terms'
+            }
         },
         errorClass: "form-invalid",
         errorPlacement: function( label, element ) {
@@ -157,7 +174,7 @@ $(document).ready(function() {
                     }, 2000);
                 else
                     form_failed($form);
-            });
+            }, 'json');
 
 
         }

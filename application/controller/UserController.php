@@ -19,6 +19,7 @@ class UserController
 
     public static function ActionAddUser()
     {
-        exit(UserModel::AddUser($_POST['reg_fullname'], $_POST['reg_email'] , $_POST['reg_password']));
+        $result = UserModel::AddUser($_POST['reg_fullname'], $_POST['reg_email'] , $_POST['reg_password']);
+        exit($result);
     }
 }

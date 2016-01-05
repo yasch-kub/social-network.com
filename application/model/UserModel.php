@@ -6,12 +6,13 @@ class UserModel
         $fullName = explode(' ', $fullName);
         $db = Mdb::GetConnection();
         $collection = $db->selectCollection(Mdb::$dbname, 'user');
-        $collection->insert([
+        $result = $collection->insert([
             'name' => $fullName[0],
             'surname' => $fullName[1],
             'email' => $email,
             'password' => password_hash($password, PASSWORD_DEFAULT)
         ]);
-        return false;
+
+        return $result['ok'] == 1 ? true : false;
     }
 }
