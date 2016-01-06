@@ -1,6 +1,8 @@
 <?php
     return [
         'adduser' => 'user/AddUser',
+        'signin' => 'user/SignIn',
         'registration' => 'user/registration',
-        '' => 'user/login'
+        'login' => 'user/login',
+        '' => 'user/view'
     ];

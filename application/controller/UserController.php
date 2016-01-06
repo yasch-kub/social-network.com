@@ -1,6 +1,14 @@
 <?php
 class UserController
 {
+    public static function ActionView()
+    {
+        if(UserModel::isLogedIn())
+            echo 'Main page';
+        else
+            header('Location: ' . '/login');
+    }
+
     public static function ActionLogin()
     {
         $view = 'templates/login.php';
@@ -21,5 +29,16 @@ class UserController
     {
         $result = UserModel::AddUser($_POST['reg_fullname'], $_POST['reg_email'] , $_POST['reg_password']);
         exit($result);
+    }
+
+    public static function ActionSignIn()
+    {
+        $result = UserModel::Login($_POST['lg_username'] , $_POST['lg_password']);
+        if ($result) {
+            $_SESSION['login'] = true;
+            exit(json_encode(true));
+        }
+        else
+            exit(json_encode(false));
     }
 }

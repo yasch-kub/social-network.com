@@ -1,5 +1,5 @@
 <!-- REGISTRATION FORM -->
-<div class="text-center" style="padding:50px 0">
+<div class="text-center">
     <div class="logo">Registration</div>
     <div class="login-form-1">
         <form id="register-form" class="text-left">

@@ -17,7 +17,10 @@ $(document).ready(function() {
     // Validation
     $("#login-form").validate({
         rules: {
-            lg_username: "required",
+            lg_username: {
+                required: true,
+                email: true
+            },
             lg_password: "required",
         },
         errorClass: "form-invalid"
@@ -32,7 +35,7 @@ $(document).ready(function() {
         {
             // Dummy AJAX request (Replace this with your AJAX code)
             // If you don't want to use AJAX, remove this
-            dummy_submit_form($(this));
+            dummy_submit_form($(this), 'signin');
 
             // Cancel the normal submission.
             // If you don't want to use AJAX, remove this
@@ -59,7 +62,7 @@ $(document).ready(function() {
             reg_password_confirm: {
                 required: true,
                 minlength: 5,
-                equalTo: "#register-form [name=password]"
+                equalTo: "#register-form [name=reg_password]"
             },
             reg_email: {
                 required: true,
@@ -98,7 +101,7 @@ $(document).ready(function() {
         {
             // Dummy AJAX request (Replace this with your AJAX code)
             // If you don't want to use AJAX, remove this
-            dummy_submit_form($(this));
+            dummy_submit_form($(this), 'adduser');
 
             // Cancel the normal submission.
             // If you don't want to use AJAX, remove this
@@ -124,7 +127,7 @@ $(document).ready(function() {
         {
             // Dummy AJAX request (Replace this with your AJAX code)
             // If you don't want to use AJAX, remove this
-            dummy_submit_form($(this));
+            dummy_submit_form($(this), '');
 
             // Cancel the normal submission.
             // If you don't want to use AJAX, remove this
@@ -160,23 +163,25 @@ $(document).ready(function() {
     // Dummy Submit Form (Remove this)
     //----------------------------------------------
     // This is just a dummy form submission. You should use your AJAX function or remove this function if you are not using AJAX.
-    function dummy_submit_form($form)
+    function dummy_submit_form($form, url)
     {
         if($form.valid())
         {
             form_loading($form);
 
-            $.post('adduser', $form.serialize(), function(response){
+            $.post(url, $form.serialize(), function(response){
                 console.log(response);
-                if (response)
-                    setTimeout(function() {
+                setTimeout(function() {
+                    if (response) {
                         form_success($form);
-                    }, 2000);
-                else
-                    form_failed($form);
+                        setTimeout(function() {
+                            window.location = 'http://social-network.com/';
+                        }, 1000);
+                    }
+                    else
+                        form_failed($form);
+                }, 1000);
             }, 'json');
-
-
         }
     }
 

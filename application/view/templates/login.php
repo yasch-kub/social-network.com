@@ -1,5 +1,5 @@
 <!-- LOGIN FORM -->
-<div class="text-center" style="padding:50px 0">
+<div class="text-center">
     <div class="logo">Login</div>
     <div class="login-form-1">
         <form id="login-form" class="text-left">
@@ -7,8 +7,8 @@
             <div class="main-login-form">
                 <div class="login-group">
                     <div class="form-group">
-                        <label for="lg_username" class="sr-only">Username</label>
-                        <input type="text" class="form-control" id="lg_username" name="lg_username" placeholder="Username">
+                        <label for="lg_username" class="sr-only">Email</label>
+                        <input type="text" class="form-control" id="lg_username" name="lg_username" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <label for="lg_password" class="sr-only">Password</label>
