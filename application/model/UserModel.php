@@ -3,7 +3,7 @@ class UserModel
 {
     public static function isLogedIn()
     {
-        return isset($_SESSION['login']);
+        return isset($_SESSION['id']);
     }
 
     public static function AddUser($fullName, $email, $password)
@@ -26,11 +26,15 @@ class UserModel
     {
         $db = Mdb::GetConnection();
         $collection = $db->selectCollection(Mdb::$dbname, 'user');
-        $result = $collection->findOne([
+        $result = $collection->findOne(
+        [
             'email' => $email,
             'password' => sha1(md5($password))
+        ],
+        [
+            '_id' => true
         ]);
 
-        return !empty($result) ? true : false;
+        return !empty($result) ? $result['_id'] : false;
     }
 }

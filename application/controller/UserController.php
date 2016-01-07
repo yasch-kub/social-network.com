@@ -4,7 +4,7 @@ class UserController
     public static function ActionView()
     {
         if(UserModel::isLogedIn())
-            echo 'Main page';
+            header('Location: /' . $_SESSION['id']);
         else
             header('Location: ' . '/login');
     }
@@ -35,10 +35,16 @@ class UserController
     {
         $result = UserModel::Login($_POST['lg_username'] , $_POST['lg_password']);
         if ($result) {
-            $_SESSION['login'] = true;
+            $_SESSION['id'] = $result;
             exit(json_encode(true));
         }
         else
             exit(json_encode(false));
+    }
+
+    public static function ActionProfile(){
+        $view = 'templates/userProfile.php';
+        $links = ['userProfile.css'];
+        include_once(view . '/templates/template.php');
     }
 }
