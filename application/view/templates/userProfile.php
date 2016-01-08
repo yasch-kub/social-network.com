@@ -1,5 +1,7 @@
 <div class="container">
     <div class="row profile">
+        <div class="col-md-1">
+        </div>
         <div class="col-md-3">
             <div class="profile-sidebar">
                 <!-- SIDEBAR USERPIC -->
@@ -51,10 +53,40 @@
                 <!-- END MENU -->
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-7">
             <div class="profile-content">
-                Some user related content goes here...
+                <div class="column col" id="main">
+                    <div class="padding">
+                        <div class="full col">
+
+                            <!-- content -->
+
+                            <div class="col-sm-12" id="featured">
+                                <div class="page-header text-muted">
+                                    Featured
+                                </div>
+                            </div>
+
+                            <!--/top story-->
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <h3>This is Some Awesome Featured Content</h3>
+                                    <h4><span class="label label-default">techvisually.com</span></h4><h4>
+                                        <small class="text-muted">1 hour ago • <a href="#" class="text-muted">Read More</a></small>
+                                    </h4>
+                                </div>
+                                <div class="col-sm-2">
+                                    <a href="#" class="pull-right"><img src="http://api.randomuser.me/portraits/thumb/men/19.jpg" class="img-circle"></a>
+                                </div>
+                            </div>
+
+
+
+                        </div><!-- /col-9 -->
+                    </div><!-- /padding -->
+                </div>
             </div>
         </div>
+
     </div>
 </div>
