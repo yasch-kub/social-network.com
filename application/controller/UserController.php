@@ -43,8 +43,24 @@ class UserController
     }
 
     public static function ActionProfile(){
+
         $view = 'templates/userProfile.php';
         $links = ['userProfile.css'];
+        $scripts = ['dragAndDropDownload.js'];
+        $user = UserModel::getInfo();
         include_once(view . '/templates/template.php');
     }
+
+    public static function ActionChangeAvatar()
+    {
+        foreach ($_FILES['files']['name'] as $index => $name)
+            if($_FILES['files']['error'][$index] == UPLOAD_ERR_OK
+                and move_uploaded_file($_FILES['files']['tmp_name'][$index], root . '/application/data/users/' .UserModel::getUserId(). '/' . $name))
+            {
+                UserModel::changeAvatar($name);
+                exit($name);
+            }
+    }
+
+
 }

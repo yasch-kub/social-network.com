@@ -1,5 +1,5 @@
 body {
-    background: #F1F3FA;
+    background: #EFEFEF;
 }
 
 /* Profile container */
@@ -101,7 +101,66 @@ body {
 
 /* Profile Content */
 .profile-content {
-    padding: 20px;
+    padding: 0px 20px 20px 20px;
     background: #fff;
     min-height: 460px;
+}
+
+/* Removes the default 20px margin and creates some padding space for the indicators and controls */
+.carousel {
+    margin-bottom: 0;
+    /*padding: 0 40px 30px 40px;*/
+}
+/* Reposition the controls slightly */
+.carousel-control {
+    left: -12px;
+}
+.carousel-control.right {
+    right: -12px;
+}
+
+.img-circle{
+    width: 100px;
+    height: 100px;
+}
+
+.comment-like-block{
+
+    font-size: 20px;
+}
+
+.comment-like-block a{
+    text-decoration: none;
+}
+
+.like{
+    float: right;
+}
+
+.page-header {
+    padding-top: 9px;
+    border-top: 1px solid #eeeeee;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.form-horizontal{
+    width: 100%;
+    display: inline-block;
+}
+
+.page-header:nth-child(1){
+    margin-top: 20px !important;
+}
+
+.profile-property{
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 13px;
+    color: #777;
+}
+
+.info-block{
+    padding-left: 20px;
 }

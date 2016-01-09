@@ -5,5 +5,6 @@
         'registration' => 'user/registration',
         'login' => 'user/login',
         '([0-9]+)' => 'user/profile/$1',
+        'changeAvatar' => 'user/changeAvatar',
         '' => 'user/view'
     ];
