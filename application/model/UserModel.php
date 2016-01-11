@@ -16,7 +16,9 @@ class UserModel
             'name' => $fullName[0],
             'surname' => $fullName[1],
             'email' => $email,
-            'password' => sha1(md5($password))
+            'password' => sha1(md5($password)),
+            'avatar' => ['../avatar.jpg'],
+            'wall' => []
         ]);
 
 
@@ -46,21 +48,55 @@ class UserModel
         return $_SESSION['id'];
     }
 
-    public static function getInfo(){
+    public static function getInfo($id){
         $db = Mdb::GetConnection();
         $collection = $db->selectCollection(Mdb::$dbname, 'user');
         $result = $collection->findOne(
             [
-                '_id' => self::getUserId()
+                '_id' => intval($id)
             ],
             [
                 'name' => true,
                 'surname' => true,
                 'info' => true,
-                'avatar' => ['$slice' => -1]
+                'avatar' => ['$slice' => -1],
             ]);
-
         return $result;
+    }
+
+    public static function getPosts($id)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->findOne(
+            [
+                '_id' => intval($id)
+            ],
+            [
+                'wall' => true,
+            ]);
+        $posts = [];
+        foreach ($result['wall'] as $item){
+            $author = $collection->findOne(
+                [
+                    '_id' => intval($item['author'])
+                ],
+                [
+                    'name' => true,
+                    'surname' => true,
+                    'avatar' => ['$slice' => -1]
+                ]);
+
+            $posts[]=[
+                'name' => $author['name'],
+                'surname' => $author['surname'],
+                'avatar' => $author['avatar'],
+                'message' => $item['message'],
+                'date' => $item['date'],
+                'id' => $item['author']
+            ];
+        }
+        return($posts);
     }
 
     public static function changeAvatar($name){
@@ -70,5 +106,53 @@ class UserModel
             '_id' => self::getUserId()
         ],
         ['$push' => ['avatar' => $name]]);
+    }
+
+    public static function getAuthorPostInfoById($id)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->findOne([
+            '_id' => intval($id)
+             ],
+            [
+                'name' => true,
+                'surname' => true,
+                'avatar' => ['$slice' => -1]
+        ]);
+        return($result);
+    }
+
+    public static function addPost($message, $userId)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $date = getdate();
+        $date = sprintf("%s %s %s in %s:%s" ,$date['mday'], $date['month'], $date['year'], $date['hours'], $date['minutes']);
+        $collection->update([
+                '_id' => intval($userId)
+            ],
+            [
+            '$push' => ['wall' =>
+                [
+                    'author' => self::getUserId(),
+                    'date' => $date,
+                    'message' => $message,
+                    'comments' => [],
+                    'like' => []
+                ]
+            ]
+        ]);
+
+        $author = self::getAuthorPostInfoById(self::getUserId());
+        return([
+            'date' => $date,
+            'message' => $message,
+            'name' => $author['name'],
+            'surname' => $author['surname'],
+            'id' => self::getUserId(),
+            'avatar' => $author['avatar']
+        ]);
+
     }
 }

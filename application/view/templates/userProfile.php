@@ -6,7 +6,7 @@
             <div class="profile-sidebar">
                 <!-- SIDEBAR USERPIC -->
                 <div id="avatarDropzone" class="profile-userpic">
-                    <img src="<? echo '/application/data/users/' . UserModel::getUserId() . '/' .$user['avatar'][0]; ?>" class="img-responsive" alt="">
+                    <img src="<? echo '/application/data/users/' . $id . '/' .$user['avatar'][0]; ?>" class="img-responsive" alt="">
                 </div>
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
@@ -135,59 +135,19 @@
                             <!--comment-->
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div class="well">
-                                        <form class="form-horizontal" role="form">
-                                            <h4>What's New</h4>
-                                            <div class="form-group" style="padding:14px;">
-                                                <textarea class="form-control" placeholder="Update your status"></textarea>
-
-                                            </div>
-                                            <button class="btn btn-success pull-right" type="button">Post</button>
-                                        </form>
-
-                                    </div>
+                                    <form id="postForm" class="form-horizontal well" role="form" action="/addPost/<? echo $id; ?>">
+                                        <textarea name="message" class="form-control" placeholder="Left your post"></textarea>
+                                        <button class="btn btn-success pull-right" type="submit">Post</button>
+                                    </form>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <p c>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                    <p class="text-muted">
-                                        1 hour ago •
-                                        <a href="#" class="text-muted">Marcus Doe</a>
-                                    </p>
-                                    <p class="comment-like-block">
-                                        <a class="comment" href="#">
-                                            <i class="fa fa-comment"></i>
-                                        </a>
-                                        <a class="like" href="#">
-                                            <i class="fa fa-heart-o"></i>
-                                        </a>
-                                    </p>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a href="#" class="pull-right"><img src="http://www.menslife.com/upload/iblock/c7b/Dasha1.jpg" class="img-circle"></a>
-                                </div>
+                            <div id="posts">
+                                <?php foreach (array_reverse($posts) as $post)
+                                    include(view . 'templates/post.php');
+                                 ?>
                             </div>
 
-                            <div class="row divider">
-                                <div class="col-sm-12"><hr></div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-10">
-                                    <h3>This is Some Awesome Featured Content</h3>
-                                    <h4>
-                                        <small class="text-muted">1 hour ago • <a href="#" class="text-muted">Marcus Doe</a></small>
-                                    </h4>
-                                </div>
-                                <div class="col-sm-2">
-                                    <a href="#" class="pull-right"><img src="http://www.menslife.com/upload/iblock/c7b/Dasha1.jpg" class="img-circle"></a>
-                                </div>
-                            </div>
-                            <div class="row divider">
-                                <div class="col-sm-12"><hr></div>
-                            </div>
 
                         </div><!-- /col-9 -->
                     </div><!-- /padding -->

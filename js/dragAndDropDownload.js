@@ -32,7 +32,8 @@ function upload(files) {
         processData: false,
         contentType: false,
         success: function(data) {
-            $('#avatarDropzone img').attr('src','/application/data/users/1/' + data);
+            $('#avatarDropzone img').attr('src', data);
+            $('body').append(data);
             console.log(data);
         }
     });

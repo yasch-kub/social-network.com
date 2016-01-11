@@ -164,3 +164,19 @@ body {
 .info-block{
     padding-left: 20px;
 }
+
+.well{
+    padding: 8px;
+}
+
+.form-group {
+    margin-bottom: 8px;
+}
+
+.form-horizontal > button{
+    margin-top: 8px;
+}
+
+.form-horizontal > textarea{
+    resize: vertical;
+}

@@ -42,12 +42,13 @@ class UserController
             exit(json_encode(false));
     }
 
-    public static function ActionProfile(){
+    public static function ActionProfile($id){
 
         $view = 'templates/userProfile.php';
         $links = ['userProfile.css'];
-        $scripts = ['dragAndDropDownload.js'];
-        $user = UserModel::getInfo();
+        $scripts = ['dragAndDropDownload.js', 'addPost.js'];
+        $user = UserModel::getInfo($id);
+        $posts = UserModel::getPosts($id);
         include_once(view . '/templates/template.php');
     }
 
@@ -58,9 +59,20 @@ class UserController
                 and move_uploaded_file($_FILES['files']['tmp_name'][$index], root . '/application/data/users/' .UserModel::getUserId(). '/' . $name))
             {
                 UserModel::changeAvatar($name);
+                $name = '/application/data/users/' .UserModel::getUserId(). '/' . $name;
                 exit($name);
             }
     }
 
+    public static function ActionAddPost($userId)
+    {
+        $post = UserModel::addPost(self::clear($_POST['message']), $userId);
+        include_once(view . 'templates/post.php');
+    }
+
+    public static function clear($value)
+    {
+        return htmlspecialchars(strip_tags(trim($value)));
+    }
 
 }
