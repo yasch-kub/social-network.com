@@ -186,11 +186,6 @@ body {
     margin: auto;
 }
 
-#slider{
-    position: inherit;
-
-}
-
 .arrow{
     text-align: center;
     line-height: 110px;
@@ -213,13 +208,25 @@ body {
 }
 
 #slidePhoto{
-    height: 110px;
     overflow: hidden;
+    padding: 0px;
 }
 
-#slidePhoto div{
-    float: left;
+#containerPhoto {
+    position: inherit;
+    width: 200%;
 }
+
+#containerPhoto > div {
+    padding: 0 4px;
+    float: left;
+    width: 12.5% !important;
+}
+
+#containerPhoto .thumbnail {
+
+}
+
 
 #slider .col-md-3{
     vertical-align: middle;

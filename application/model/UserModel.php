@@ -63,7 +63,7 @@ class UserModel
                 'surname' => true,
                 'info' => true,
                 'avatar' => ['$slice' => -1],
-                'photos' => ['$slice' => 6]
+                'photos' => ['$slice' => 4]
             ]);
         return $result;
     }
@@ -160,7 +160,7 @@ class UserModel
 
     }
 
-    public static function getPhotosByNum($id, $num)
+    public static function getPhotosByNum($id, $num, $direction)
     {
         $db = Mdb::GetConnection();
         $collection = $db->selectCollection(Mdb::$dbname, 'user');
@@ -168,7 +168,7 @@ class UserModel
             '_id' => intval($id)
         ],
         [
-            'photos' => ['$slice' => [$num, 4]],
+            'photos' => ['$slice' => [$num, $direction == 'right' ? 4 : -4]],
             "_id" => false,
             "name" => false,
             "surname" => false,

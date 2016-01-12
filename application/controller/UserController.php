@@ -74,7 +74,7 @@ class UserController
     {
         $data = file_get_contents('php://input');
         $data = json_decode($data, true);
-        exit(json_encode(UserModel::getPhotosByNum($data['id'], $data['num'])));
+        exit(json_encode(UserModel::getPhotosByNum($data['id'], $data['num'], $data['direction'])));
     }
 
     public static function clear($value)
