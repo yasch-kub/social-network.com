@@ -16,6 +16,7 @@ $(document).ready(function(){
             var nNewPhotos = data.photos.length;
             if (nNewPhotos != 0) {
                 button.css('opacity', '1');
+
                 while (data.photos.length != 0) {
                     var clone = $('#containerPhoto div').last().clone();
                     clone.find('img').attr({
@@ -51,7 +52,7 @@ $(document).ready(function(){
             'id' : id,
             'direction' : 'left'
         };
-        console.log(obj);
+
         $.post('/getSlide', JSON.stringify(obj), function(data){
             console.log(data);
             var nNewPhotos = data.photos.length;
@@ -60,18 +61,18 @@ $(document).ready(function(){
                 while (data.photos.length != 0) {
                     var clone = $('#containerPhoto div').last().clone();
                     clone.find('img').attr({
-                        'src': '/application/data/users/'+ id +'/photos/' + data.photos.shift(),
+                        'src': '/application/data/users/'+ id +'/photos/' + data.photos.pop(),
                         'num' : parseInt(--num)
                     });
-                    $('#containerPhoto').append(clone);
+                    $('#containerPhoto').prepend(clone);
+                    $("#containerPhoto").css({
+                        marginLeft: '-=' + nNewPhotos * 25 + '%'
+                    });
                 }
                 $("#containerPhoto").animate({
-                    marginLeft: '-=' + nNewPhotos * 25 + '%'
+                    marginLeft: '0'
                 }, 500, function() {
-                    $('#containerPhoto div').slice(0, nNewPhotos).remove();
-                    $("#containerPhoto").css({
-                        marginLeft: '0px'
-                    });
+                    $('#containerPhoto div').slice($(this).length - nNewPhotos, nNewPhotos).remove();
                 });
             }
             else

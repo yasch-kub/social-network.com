@@ -162,13 +162,23 @@ class UserModel
 
     public static function getPhotosByNum($id, $num, $direction)
     {
+        $nPhoto = 4;
+        if ($direction == 'left'){
+            if ($num <= 1)
+                return false;
+            elseif ($num <= 4){
+                $nPhoto = $num - 1;
+                $num = 0;
+            }
+        }
         $db = Mdb::GetConnection();
         $collection = $db->selectCollection(Mdb::$dbname, 'user');
+
         $result = $collection->findOne([
             '_id' => intval($id)
         ],
         [
-            'photos' => ['$slice' => [$num, $direction == 'right' ? 4 : -4]],
+            'photos' => ['$slice' => [$num, $nPhoto]],
             "_id" => false,
             "name" => false,
             "surname" => false,
