@@ -15,8 +15,6 @@ $(document).ready(function(){
             console.log(data);
             var nNewPhotos = data.photos.length;
             if (nNewPhotos != 0) {
-                button.css('opacity', '1');
-
                 while (data.photos.length != 0) {
                     var clone = $('#containerPhoto div').last().clone();
                     clone.find('img').attr({
@@ -34,8 +32,6 @@ $(document).ready(function(){
                     });
                 });
             }
-            else
-                button.css('opacity', '0.3');
         }, 'json');
 
 
@@ -55,9 +51,9 @@ $(document).ready(function(){
 
         $.post('/getSlide', JSON.stringify(obj), function(data){
             console.log(data);
-            var nNewPhotos = data.photos.length;
+            var nNewPhotos = data ? data.photos.length : 0;
+            
             if (nNewPhotos != 0) {
-                button.css('opacity', '1');
                 var i = 0;
                 while (data.photos.length != 0) {
                     i++;
@@ -79,8 +75,6 @@ $(document).ready(function(){
                         $('#containerPhoto div').slice(length - nNewPhotos, length).remove();
                     });
             }
-            else
-                button.css('opacity', '0.3');
         }, 'json');
     });
 
