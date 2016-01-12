@@ -33,7 +33,7 @@ function upload(files) {
         contentType: false,
         success: function(data) {
             $('#avatarDropzone img').attr('src', data);
-            $('body').append(data);
+            //$('body').append(data);
             console.log(data);
         }
     });

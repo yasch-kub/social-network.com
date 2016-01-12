@@ -46,7 +46,7 @@ class UserController
 
         $view = 'templates/userProfile.php';
         $links = ['userProfile.css'];
-        $scripts = ['dragAndDropDownload.js', 'addPost.js'];
+        $scripts = ['dragAndDropDownload.js', 'addPost.js', 'slider.js'];
         $user = UserModel::getInfo($id);
         $posts = UserModel::getPosts($id);
         include_once(view . '/templates/template.php');
@@ -68,6 +68,13 @@ class UserController
     {
         $post = UserModel::addPost(self::clear($_POST['message']), $userId);
         include_once(view . 'templates/post.php');
+    }
+
+    public static function ActionGetSlidePhoto()
+    {
+        $data = file_get_contents('php://input');
+        $data = json_decode($data, true);
+        exit(json_encode(UserModel::getPhotosByNum($data['id'], $data['num'])));
     }
 
     public static function clear($value)

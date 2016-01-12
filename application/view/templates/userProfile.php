@@ -94,27 +94,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-6 col-md-3">
-                        <a href="#" class="thumbnail">
-                            <img src="http://www.menslife.com/upload/iblock/c7b/Dasha1.jpg" alt="...">
-                        </a>
-                    </div>
-                    <div class="col-xs-6 col-md-3">
-                        <a href="#" class="thumbnail">
-                            <img src="http://www.menslife.com/upload/iblock/c7b/Dasha1.jpg" alt="...">
-                        </a>
-                    </div>
-                    <div class="col-xs-6 col-md-3">
-                        <a href="#" class="thumbnail">
-                            <img src="http://www.menslife.com/upload/iblock/c7b/Dasha1.jpg" alt="...">
-                        </a>
-                    </div>
-                    <div class="col-xs-6 col-md-3">
-                        <a href="#" class="thumbnail">
-                            <img src="http://www.menslife.com/upload/iblock/c7b/Dasha1.jpg" alt="...">
-                        </a>
-                    </div>
-
+                    <? include(view . 'templates/slider.php'); ?>
                 </div>
 
 

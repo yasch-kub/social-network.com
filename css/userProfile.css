@@ -180,3 +180,48 @@ body {
 .form-horizontal > textarea{
     resize: vertical;
 }
+
+.fa-angle-right, .fa-angle-left{
+    font-size: 30px;
+    margin: auto;
+}
+
+#slider{
+    position: inherit;
+
+}
+
+.arrow{
+    text-align: center;
+    line-height: 110px;
+}
+
+.arrow i{
+    color: #777;
+    transition: color 0.2s ease-in;
+
+}
+
+.arrow i:hover{
+    cursor: pointer;
+    color: #5b9bd1;
+}
+
+#avatarDropzone img{
+    width: 150px;
+    height: 150px;
+}
+
+#slidePhoto{
+    height: 110px;
+    overflow: hidden;
+}
+
+#slidePhoto div{
+    float: left;
+}
+
+#slider .col-md-3{
+    vertical-align: middle;
+    padding: 2px;
+}

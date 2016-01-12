@@ -18,12 +18,15 @@ class UserModel
             'email' => $email,
             'password' => sha1(md5($password)),
             'avatar' => ['../avatar.jpg'],
-            'wall' => []
+            'wall' => [],
+            'photos' => []
         ]);
 
 
-        if ($result['ok'] == 1)
+        if ($result['ok'] == 1) {
             mkdir(root . '/application/data/users/' . $collection->count() . '/');
+            mkdir(root . '/application/data/users/' . $collection->count() . '/photos/');
+        }
 
         return $result['ok'] == 1 ? true : false;
     }
@@ -60,6 +63,7 @@ class UserModel
                 'surname' => true,
                 'info' => true,
                 'avatar' => ['$slice' => -1],
+                'photos' => ['$slice' => 6]
             ]);
         return $result;
     }
@@ -154,5 +158,26 @@ class UserModel
             'avatar' => $author['avatar']
         ]);
 
+    }
+
+    public static function getPhotosByNum($id, $num)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->findOne([
+            '_id' => intval($id)
+        ],
+        [
+            'photos' => ['$slice' => [$num, 4]],
+            "_id" => false,
+            "name" => false,
+            "surname" => false,
+            "email" => false,
+            "password" => false,
+            "avatar" => false,
+            "wall" => false
+
+        ]);
+        return $result;
     }
 }
