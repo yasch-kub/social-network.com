@@ -63,18 +63,21 @@ $(document).ready(function(){
                     i++;
                     var clone = $('#containerPhoto div').last().clone();
                     clone.find('img').attr({
-                        'src': '/application/data/users/'+ id +'/photos/' + data.photos.pop(),
-                        'num' : parseInt(--num)
+                        'src': '/application/data/users/' + id + '/photos/' + data.photos.pop(),
+                        'num': parseInt(--num)
                     });
-                    clone.css({'margin-left': i* -12.5 + '%'});
+                    clone.css({'margin-left': i * -12.5 + '%'});
                     $('#containerPhoto').prepend(clone);
-                $("#containerPhoto").animate({
-                    marginLeft: '+=' + nNewPhotos * 25 + '%'
-                    }, 500, function() {
-                        var length = $('#containerPhoto div').length;
-                        //$('#containerPhoto div').slice(length - nNewPhotos, length).remove();
-                    });
                 }
+
+                $("#containerPhoto").animate({
+                    marginLeft: '+=' + (nNewPhotos * 25) + '%'
+                    }, 500, function() {
+                        
+                        var length = $('#containerPhoto div').length;
+                        console.log(length);
+                        $('#containerPhoto div').slice(length - nNewPhotos, length).remove();
+                    });
             }
             else
                 button.css('opacity', '0.3');
