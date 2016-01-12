@@ -73,7 +73,7 @@ $(document).ready(function(){
                 $("#containerPhoto").animate({
                     marginLeft: '+=' + (nNewPhotos * 25) + '%'
                     }, 500, function() {
-                        
+
                         var length = $('#containerPhoto div').length;
                         console.log(length);
                         $('#containerPhoto div').slice(length - nNewPhotos, length).remove();
