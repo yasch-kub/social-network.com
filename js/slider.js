@@ -58,22 +58,23 @@ $(document).ready(function(){
             var nNewPhotos = data.photos.length;
             if (nNewPhotos != 0) {
                 button.css('opacity', '1');
+                var i = 0;
                 while (data.photos.length != 0) {
+                    i++;
                     var clone = $('#containerPhoto div').last().clone();
                     clone.find('img').attr({
                         'src': '/application/data/users/'+ id +'/photos/' + data.photos.pop(),
                         'num' : parseInt(--num)
                     });
+                    clone.css({'margin-left': i* -12.5 + '%'});
                     $('#containerPhoto').prepend(clone);
-                    $("#containerPhoto").css({
-                        marginLeft: '-=' + nNewPhotos * 25 + '%'
+                $("#containerPhoto").animate({
+                    marginLeft: '+=' + nNewPhotos * 25 + '%'
+                    }, 500, function() {
+                        var length = $('#containerPhoto div').length;
+                        //$('#containerPhoto div').slice(length - nNewPhotos, length).remove();
                     });
                 }
-                $("#containerPhoto").animate({
-                    marginLeft: '0'
-                }, 500, function() {
-                    $('#containerPhoto div').slice($(this).length - nNewPhotos, nNewPhotos).remove();
-                });
             }
             else
                 button.css('opacity', '0.3');
