@@ -47,7 +47,7 @@ class UserController
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/main.php';
         $links = ['userProfile.css'];
-        $scripts = ['dragAndDropDownload.js', 'addPost.js', 'slider.js'];
+        $scripts = ['dragAndDropDownload.js', 'addPost.js', 'slider.js', 'addInform.js'];
         $user = UserModel::getInfo($id);
         $posts = UserModel::getPosts($id);
         include_once(view . '/templates/template.php');
@@ -89,9 +89,28 @@ class UserController
         include_once(view . '/templates/template.php');
     }
 
+    public static function actionFriends($id)
+    {
+        $user = UserModel::getInfo($id);
+        $photos = UserModel::getAllPhotos($id);
+        $view = 'templates/userProfile.php';
+        $profile_content = 'templates/friends.php';
+        $links = ['userProfile.css'];
+        $scripts = ['dragAndDropDownload.js'];
+        include_once(view . '/templates/template.php');
+    }
+
+    public static function actionAddInfo(){
+        $data = file_get_contents('php://input');
+        $data = json_decode($data, true);
+        exit(json_encode(UserModel::addInformation($data['info'], $data['value'])));
+    }
+
     public static function clear($value)
     {
         return htmlspecialchars(strip_tags(trim($value)));
     }
+
+
 
 }

@@ -33,7 +33,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="">
+                            <a href="/<? echo $id; ?>/friends">
                                 <i class="fa fa-users"></i>
                                 Friends
                             </a>

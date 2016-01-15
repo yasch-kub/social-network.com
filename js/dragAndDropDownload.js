@@ -2,6 +2,7 @@ window.onload = function(){
     var dropzone = document.getElementById('avatarDropzone');
 
     dropzone.ondrop = function(event) {
+        $('.dropzone').hide();
         event.preventDefault();
         if (event.dataTransfer.files.length != 0)
             upload(event.dataTransfer.files);

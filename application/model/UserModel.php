@@ -63,7 +63,8 @@ class UserModel
                 'surname' => true,
                 'info' => true,
                 'avatar' => ['$slice' => -1],
-                'photos' => ['$slice' => 4]
+                'photos' => ['$slice' => 4],
+                'information' => true
             ]);
         return $result;
     }
@@ -202,6 +203,18 @@ class UserModel
         [
             'photos' => true
         ]);
+        return $result;
+    }
+
+    public static function addInformation($info, $value){
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->update([
+            '_id' => self::getUserId()
+            ],
+            [
+                '$push' => ['information' => [$info => $value]]
+            ]);
         return $result;
     }
 }

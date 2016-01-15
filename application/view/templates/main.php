@@ -2,6 +2,7 @@
     <div class="col-sm-12">
         <div class="page-header text-muted">
             Information
+            <span class="pull-right glyphicon glyphicon-plus add-info-plus"></span>
         </div>
     </div>
 </div>
@@ -18,6 +19,27 @@
     </div>
     <div class="col-md-9">
         <? echo $user['surname']; ?>
+    </div>
+
+    <?php   foreach ($user['information'] as $item): ?>
+        <div class="profile-property col-md-3">
+            <? echo key($item); ?>
+        </div>
+        <div class="col-md-9">
+            <? echo current($item); ?>
+        </div>
+    <?php endforeach; ?>
+
+    <div class="add-information">
+        <div class="col-md-3">
+            <input name="info" placeholder="information" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <input name="value" placeholder="value" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <span class="glyphicon glyphicon-plus information-plus"></span>
+        </div>
     </div>
 </div>
 
