@@ -30,7 +30,7 @@
 <!--    </div>-->
 <!--</div>-->
 
-<div class="row">
+<div class="row" id="galleryPhotos">
     <?php foreach($photos['photos'] as $photo):?>
     <div class="col-md-3 col-lg-4 col-sm-4 col-xs-12 thumb">
         <a>

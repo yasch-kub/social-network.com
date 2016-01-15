@@ -7,6 +7,7 @@
         '([0-9]+)/gallery' => 'user/gallery/$1',
         '([0-9]+)' => 'user/profile/$1',
         'changeAvatar' => 'user/changeAvatar',
+        'addPhotos' => 'user/addPhotos',
         'addPost/([0-9]+)' => 'user/addPost/$1',
         'getSlide' => 'user/getSlidePhoto',
 
