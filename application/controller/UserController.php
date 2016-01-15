@@ -55,14 +55,22 @@ class UserController
 
     public static function ActionChangeAvatar()
     {
-        foreach ($_FILES['files']['name'] as $index => $name)
-            if($_FILES['files']['error'][$index] == UPLOAD_ERR_OK
-                and move_uploaded_file($_FILES['files']['tmp_name'][$index], root . '/application/data/users/' .UserModel::getUserId(). '/' . $name))
+        $path = '/application/data/users/' .UserModel::getUserId(). '/';
+        $images = self::fileUpload($path);
+        UserModel::changeAvatar($images[0]);
+        $images[0] = $path . $images[0];
+        exit(json_encode($images));
+    }
+
+    public static function ActionAddPhotos()
             {
-                UserModel::changeAvatar($name);
-                $name = '/application/data/users/' .UserModel::getUserId(). '/' . $name;
-                exit($name);
+        $path = '/application/data/users/' .UserModel::getUserId(). '/photos/';
+        $images = self::fileUpload($path);
+        UserModel::addPhotos($images);
+        for ($i = 0; $i < count($images); $i++) {
+            $images[$i] = $path . $images[$i];
             }
+        exit(json_encode($images));
     }
 
     public static function ActionAddPost($userId)
@@ -111,6 +119,16 @@ class UserController
         return htmlspecialchars(strip_tags(trim($value)));
     }
 
+    public static function fileUpload($path)
+    {
+        $images = [];
+        foreach ($_FILES['files']['name'] as $index => $name)
+            if($_FILES['files']['error'][$index] == UPLOAD_ERR_OK
+                and move_uploaded_file($_FILES['files']['tmp_name'][$index], root . $path . $name))
+            {
+                $images[] = $name;
+            }
 
-
+        return $images;
+    }
 }

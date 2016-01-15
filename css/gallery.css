@@ -24,6 +24,15 @@
     margin-bottom: 20px;
 }
 
+#galleryDropZone.dragenter {
+    color: #333333;
+}
+
+#galleryDropZone > * {
+    pointer-events: none;
+}
+
+
 .progress {
     height: 5px;
 }

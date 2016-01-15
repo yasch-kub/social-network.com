@@ -217,4 +217,13 @@ class UserModel
             ]);
         return $result;
     }
+    public static function addPhotos($photos)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->update([
+            '_id' => self::getUserId()
+        ],
+            ['$push' => ['photos' => ['$each' =>  $photos]]]);
+    }
 }
