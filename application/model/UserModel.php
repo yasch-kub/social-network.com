@@ -191,4 +191,17 @@ class UserModel
         ]);
         return $result;
     }
+
+    public static function getAllPhotos($id)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->findOne([
+            '_id' => intval($id)
+        ],
+        [
+            'photos' => true
+        ]);
+        return $result;
+    }
 }

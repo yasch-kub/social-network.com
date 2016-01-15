@@ -1,0 +1,21 @@
+.profile-userpic{
+    position: inherit;
+}
+
+.dropzone{
+    display: none;
+    text-align: center;
+    line-height: 150px;
+    transform: translate(-50%, 0%);
+    left: 50%;
+    height: 155px;
+    width: 155px;
+    position: absolute;
+    border-radius: 50%;
+    border: dashed 2px;
+    background-color: white;
+}
+
+.dragover{
+    border-color: #1b6d85;
+}

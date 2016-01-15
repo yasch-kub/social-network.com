@@ -45,6 +45,7 @@ class UserController
     public static function ActionProfile($id){
 
         $view = 'templates/userProfile.php';
+        $profile_content = 'templates/main.php';
         $links = ['userProfile.css'];
         $scripts = ['dragAndDropDownload.js', 'addPost.js', 'slider.js'];
         $user = UserModel::getInfo($id);
@@ -75,6 +76,17 @@ class UserController
         $data = file_get_contents('php://input');
         $data = json_decode($data, true);
         exit(json_encode(UserModel::getPhotosByNum($data['id'], $data['num'], $data['direction'])));
+    }
+
+    public static function ActionGallery($id)
+    {
+        $user = UserModel::getInfo($id);
+        $photos = UserModel::getAllPhotos($id);
+        $view = 'templates/userProfile.php';
+        $profile_content = 'templates/gallery.php';
+        $links = ['gallery.css', 'userProfile.css'];
+        $scripts = ['gallery.js', 'dragAndDropDownload.js'];
+        include_once(view . '/templates/template.php');
     }
 
     public static function clear($value)

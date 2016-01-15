@@ -202,6 +202,10 @@ body {
     color: #5b9bd1;
 }
 
+#avatarDropzone > * {
+    pointer-events: none;
+}
+
 #avatarDropzone img{
     width: 150px;
     height: 150px;

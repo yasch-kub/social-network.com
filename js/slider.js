@@ -52,7 +52,7 @@ $(document).ready(function(){
         $.post('/getSlide', JSON.stringify(obj), function(data){
             console.log(data);
             var nNewPhotos = data ? data.photos.length : 0;
-            
+
             if (nNewPhotos != 0) {
                 var i = 0;
                 while (data.photos.length != 0) {
