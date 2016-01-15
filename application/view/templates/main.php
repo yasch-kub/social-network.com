@@ -11,13 +11,13 @@
         Name:
     </div>
     <div class="col-md-9">
-        Marcus
+        <? echo $user['name']; ?>
     </div>
     <div class="profile-property col-md-3">
         LastName:
     </div>
     <div class="col-md-9">
-        Due
+        <? echo $user['surname']; ?>
     </div>
 </div>
 

@@ -14,3 +14,42 @@
     background-image: none;
 }
 
+#galleryDropZone {
+    text-align: center;
+    font-family: "Roboto";
+    font-size: 16px;
+    color: #777;
+    border: dashed 2px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.progress {
+    height: 5px;
+}
+
+.panel-body {
+    padding: 5px;
+}
+
+#galleryDropZone > span {
+     line-height: 100px;
+ }
+
+.spinner {
+    position: relative;
+    height: 35px;
+    width: 35px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+.slice {
+    border-radius: 50%;
+    position: absolute;
+    width: 23px;
+    height: 23px;
+    background-color: white;
+    top: 6px;
+    left: 6px;
+}

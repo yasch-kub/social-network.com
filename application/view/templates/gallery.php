@@ -6,6 +6,30 @@
     </div>
 </div>
 
+<div id="galleryDropZone">
+    <span>
+        Drop photos here to download
+    </span>
+</div>
+
+<!--<div class="panel panel-default">-->
+<!--    <div class="panel-body row">-->
+<!--        <div class="col-md-3">-->
+<!--            sdgsgdfg-->
+<!--        </div>-->
+<!--        <div class="col-md-8">-->
+<!--            <div class="progress">-->
+<!--                <div class="progress-bar progress-bar-success" role="progressbar">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-1">-->
+<!--            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
+<!--        </div>-->
+<!---->
+<!--    </div>-->
+<!--</div>-->
+
 <div class="row">
     <?php foreach($photos['photos'] as $photo):?>
     <div class="col-md-3 col-lg-4 col-sm-4 col-xs-12 thumb">

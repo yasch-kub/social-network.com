@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,500italic,500,900italic,900,700italic,300italic,300,100italic,100' rel='stylesheet' type='text/css'>
     <?php if (isset($links)): ?>
         <?php foreach($links as $link): ?>
             <link rel="stylesheet" href="../css/<? echo $link; ?>">

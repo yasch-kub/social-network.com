@@ -171,7 +171,7 @@ class UserModel
                 $num = 0;
             }
         }
-        
+
         $db = Mdb::GetConnection();
         $collection = $db->selectCollection(Mdb::$dbname, 'user');
 
