@@ -9,9 +9,11 @@
         'addinfo' => 'user/addinfo',
         '([0-9]+)' => 'user/profile/$1',
         'changeAvatar' => 'user/changeAvatar',
+        'follow' => 'user/follow',
         'addPhotos' => 'user/addPhotos',
         'addPost/([0-9]+)' => 'user/addPost/$1',
         'getSlide' => 'user/getSlidePhoto',
-
+        'messages' => 'user/messages',
+        'dialog' => 'user/dialog',
         '' => 'user/view'
     ];

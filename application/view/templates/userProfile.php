@@ -21,8 +21,13 @@
                     </div>
                 </div>
                 <div class="profile-userbuttons">
-                    <button type="button" class="btn btn-success btn-sm">Follow</button>
-                    <button type="button" class="btn btn-danger btn-sm">Message</button>
+
+                    <?php if(UserModel::getUserId() != $id): ?>
+                        <?php if(!in_array($id, UserModel::getFollowers(UserModel::getUserId()))): ?>
+                            <button value="<? echo $id; ?>" id="follow" type="submit" class="btn btn-success btn-sm">Follow</button>
+                        <?php endif; ?>
+                        <button id="message" type="button" class="btn btn-danger btn-sm">Message</button>
+                    <?php endif; ?>
                 </div>
                 <div class="profile-usermenu">
                     <ul class="nav">
@@ -40,7 +45,7 @@
                         </li>
 
                         <li>
-                            <a href="">
+                            <a href="/messages">
                                 <i class="fa fa-envelope"></i>
                                 Messages
                             </a>

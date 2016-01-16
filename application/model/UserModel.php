@@ -19,7 +19,9 @@ class UserModel
             'password' => sha1(md5($password)),
             'avatar' => ['../avatar.jpg'],
             'wall' => [],
-            'photos' => []
+            'photos' => [],
+            'followers' => [],
+            'information' => []
         ]);
 
 
@@ -223,7 +225,58 @@ class UserModel
         $collection = $db->selectCollection(Mdb::$dbname, 'user');
         $result = $collection->update([
             '_id' => self::getUserId()
-        ],
-            ['$push' => ['photos' => ['$each' =>  $photos]]]);
+            ],
+            [
+                '$push' => ['photos' => ['$each' =>  $photos]]
+            ]);
+    }
+
+    public static function addFolowers($follower_id)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result_one = $collection->update([
+                '_id' => self::getUserId()
+            ],
+            [
+                '$push' => ['followers' => intval($follower_id)]
+            ]);
+
+        $result_two = $collection->update([
+            '_id' => intval($follower_id)
+            ],
+            ['$push' => ['followers' => self::getUserId()]
+            ]);
+
+        if( $result_one['ok'] == 1 and $result_two['ok'] == 1)
+            return true;
+    }
+
+    public static function getFollowers($id)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $followers_id = $collection->findOne([
+            '_id' => intval($id)
+        ],[
+            '_id' => false,
+            'followers' => true
+        ]);
+        return $followers_id['followers'];
+    }
+
+    public static function getFollowersInfo($id)
+    {
+        $followers_id = self::getFollowers($id);
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->find([
+           '_id' => ['$in' => $followers_id]
+        ],[
+           'name' => true,
+           'surname' => true,
+           'avatar' => ['$slice' => -1]
+        ]);
+        return $result;
     }
 }
