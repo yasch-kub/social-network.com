@@ -22,7 +22,7 @@
 </div>
 
 <div id="commentsBox">
-    <?php foreach (array_reverse($post['comments']) as $comment): ?>
+    <?php foreach ($post['comments'] as $comment): ?>
         <?php include view . 'templates/comment.php'; ?>
     <? endforeach; ?>
     <div class="row comment-box">

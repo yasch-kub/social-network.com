@@ -30,7 +30,7 @@ $(document).ready(function() {
 function mediaStream() {
 	var snapshotButton = $('#snapshotButton');
 	var snapshotSaveButton = $('#snapshotSaveButton');
-	var video = document.querySelector('#webcamTranslation > video');
+	var video = document.querySelector('#webcamTranslation  video');
 	var canvasBlock = $('#canvas');
 	var canvas = document.querySelector('#webcamTranslation  canvas');
 	var vendorURL = window.URL || window.webkitURL;
