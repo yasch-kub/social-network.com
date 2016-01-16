@@ -17,7 +17,7 @@ $(document).ready(function(){
             $.post('addinfo', JSON.stringify(obj), function (response) {
                 console.log(response);
                 var html = '<div class="profile-property col-md-3">' + obj.info + '</div><div class="col-md-9">' + obj.value + '</div>';
-                $('.info-block').append(html);
+                $('.add-information').before(html);
             });
             $('.add-information').hide();
         }

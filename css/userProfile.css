@@ -1,5 +1,6 @@
 body {
     background: #EFEFEF;
+    font-family: 'Roboto';
 }
 
 /* Profile container */
@@ -273,4 +274,16 @@ body {
 
 .comment{
     padding-top: 20px;
+}
+
+.add-info-plus:hover {
+   cursor: pointer;
+}
+
+.comment-box {
+    padding-left: 50px;
+}
+
+.comment-box > form {
+    width: 70%;
 }

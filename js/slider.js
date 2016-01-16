@@ -10,9 +10,11 @@ $(document).ready(function(){
             'id' : id,
             'direction' : 'right'
         };
+        console.log(num);
         console.log(obj);
+
         $.post('/getSlide', JSON.stringify(obj), function(data){
-            console.log(data);
+            console.log(data.photos);
             var nNewPhotos = data.photos.length;
             if (nNewPhotos != 0) {
                 while (data.photos.length != 0) {
@@ -49,8 +51,11 @@ $(document).ready(function(){
             'direction' : 'left'
         };
 
+        console.log(num);
+        console.log(obj);
+
         $.post('/getSlide', JSON.stringify(obj), function(data){
-            console.log(data);
+            console.log(data.photos);
             var nNewPhotos = data ? data.photos.length : 0;
 
             if (nNewPhotos != 0) {
@@ -69,7 +74,10 @@ $(document).ready(function(){
                 $("#containerPhoto").animate({
                     marginLeft: '+=' + (nNewPhotos * 25) + '%'
                     }, 500, function() {
-
+                        $('#containerPhoto div').css('margin-left', '0px');
+                        $("#containerPhoto").css({
+                            marginLeft: '0px'
+                        });
                         var length = $('#containerPhoto div').length;
                         console.log(length);
                         $('#containerPhoto div').slice(length - nNewPhotos, length).remove();

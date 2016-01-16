@@ -175,7 +175,7 @@ $(document).ready(function() {
                     if (response) {
                         form_success($form);
                         setTimeout(function() {
-                            window.location = 'http://social-network.com/';
+                            window.location = 'http://localhost/';
                         }, 1000);
                     }
                     else

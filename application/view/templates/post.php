@@ -3,7 +3,7 @@
         <p class="user-posts"><? echo $post['message'] ?></p>
         <p class="text-muted">
             <? echo $post['date'] ?> •
-            <a href="/<? echo $post['id'] ?>" class="text-muted"><? echo $post['name'] . ' ' . $post['surname'] ?></a>
+            <a href="/<? echo $post['authorId'] ?>" class="text-muted"><? echo $post['name'] . ' ' . $post['surname'] ?></a>
         </p>
         <p class="comment-like-block">
             <a class="comment" href="#">
@@ -15,29 +15,27 @@
         </p>
     </div>
     <div class="col-sm-2">
-        <a href="/<? echo $post['id'] ?>" class="pull-right">
-            <img src="<? echo '/application/data/users/' . $post['id'] . '/' .$post['avatar'][0]; ?>" class="img-circle">
+        <a href="/<? echo $post['authorId'] ?>" class="pull-right">
+            <img src="<? echo '/application/data/users/' . $post['authorId'] . '/' .$post['avatar'][0]; ?>" class="img-circle">
         </a>
-    </div>
-</div>
-<!--post answer-->
-<div class="row comment">
-    <div class="col-sm-2">
-        <a href="/<? echo $post['id'] ?>" class="pull-left">
-            <img src="<? echo '/application/data/users/' . $post['id'] . '/' .$post['avatar'][0]; ?>" class="img-circle img-comment">
-        </a>
-    </div>
-    <div class="col-sm-10">
-        <p class="user-posts post-comment"><? echo $post['message'] ?></p>
-    </div>
-    <div class="col-md-12">
-        <p class="text-muted">
-            <? echo $post['date'] ?> •
-            <a href="/<? echo $post['id'] ?>" class="text-muted"><? echo $post['name'] . ' ' . $post['surname'] ?></a>
-        </p>
     </div>
 </div>
 
+<div id="commentsBox">
+    <?php foreach (array_reverse($post['comments']) as $comment): ?>
+        <?php include view . 'templates/comment.php'; ?>
+    <? endforeach; ?>
+    <div class="row comment-box">
+        <form role="form" id="postCommentForm" action="/addComment/<? echo $id . '/' . $post['id']; ?>">
+            <div class="input-group">
+                <input type="text" name="comment" class="form-control" aria-label="..." placeholder="Comment...">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-success form-control">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div class="row divider">
     <div class="col-sm-12"><hr></div>

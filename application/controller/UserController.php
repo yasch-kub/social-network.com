@@ -43,13 +43,14 @@ class UserController
     }
 
     public static function ActionProfile($id){
-
+        $menuClass = [0 => 'active', 1 => '', 2 => '', 3 => '', 4 => '', 5 => ''];
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/main.php';
-        $links = ['userProfile.css'];
-        $scripts = ['dragAndDropDownload.js', 'addPost.js', 'slider.js', 'addInform.js'];
+        $links = ['userProfile.css', 'webcam.css'];
+        $scripts = ['dragAndDropDownload.js', 'addPost.js', 'slider.js', 'addInform.js', 'MediaAPI.js'];
         $user = UserModel::getInfo($id);
         $posts = UserModel::getPosts($id);
+
         include_once(view . '/templates/template.php');
     }
 
@@ -69,12 +70,13 @@ class UserController
         UserModel::addPhotos($images);
         for ($i = 0; $i < count($images); $i++) {
             $images[$i] = $path . $images[$i];
-            }
+        }
         exit(json_encode($images));
     }
 
     public static function ActionAddPost($userId)
     {
+        $id = $userId;
         $post = UserModel::addPost(self::clear($_POST['message']), $userId);
         include_once(view . 'templates/post.php');
     }
@@ -88,16 +90,17 @@ class UserController
 
     public static function ActionGallery($id)
     {
+        $menuClass = [0 => '', 1 => '', 2 => '', 3 => 'active', 4 => '', 5 => ''];
         $user = UserModel::getInfo($id);
         $photos = UserModel::getAllPhotos($id);
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/gallery.php';
-        $links = ['gallery.css', 'userProfile.css'];
-        $scripts = ['gallery.js', 'dragAndDropDownload.js'];
+        $links = ['gallery.css', 'userProfile.css', 'webcam.css'];
+        $scripts = ['gallery.js', 'dragAndDropDownload.js', 'MediaAPI.js'];
         include_once(view . '/templates/template.php');
     }
 
-    public static function actionFriends($id)
+    public static function ActionFriends($id)
     {
         $user = UserModel::getInfo($id);
         $photos = UserModel::getAllPhotos($id);
@@ -108,10 +111,18 @@ class UserController
         include_once(view . '/templates/template.php');
     }
 
-    public static function actionAddInfo(){
+    public static function ActionAddInfo(){
         $data = file_get_contents('php://input');
         $data = json_decode($data, true);
         exit(json_encode(UserModel::addInformation($data['info'], $data['value'])));
+    }
+
+    public static function ActionAddComment($userId, $postId)
+    {
+        $comment = self::clear($_POST['comment']);
+        $comment = UserModel::addPostComment($userId, $postId, $comment);
+
+        include_once view . 'templates/comment.php';
     }
 
     public static function clear($value)
@@ -130,5 +141,23 @@ class UserController
             }
 
         return $images;
+    }
+
+    public static function ActionSaveWebCamImage()
+    {
+        $img = file_get_contents('php://input');
+        $img = str_replace('data:image/png;base64,', '', $img);
+        $img = str_replace(' ', '+', $img);
+        $data = base64_decode($img);
+
+        $dir = root . '/application/data/users/' . UserModel::getUserId() . '/';
+        $nFiles = count(scandir($dir)) - 2;
+        $name = 'image_' . $nFiles . '.png';
+        $file = $dir . $name;
+        file_put_contents($file, $data);
+
+        UserModel::changeAvatar($name);
+        $path = '/application/data/users/' .UserModel::getUserId(). '/';
+        exit(json_encode($path . $name));
     }
 }

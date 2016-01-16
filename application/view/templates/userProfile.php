@@ -12,6 +12,7 @@
                     <img src="<? echo '/application/data/users/' . $id . '/' . $user['avatar'][0]; ?>"
                          class="img-responsive" alt="">
                 </div>
+                <div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title">dfdfgdfgfdgdf</h3><div class="popover-content">sdgsdgsdfgdsgdf</div></div>
                 <div class="profile-usertitle">
                     <div class="profile-usertitle-name">
                         <? echo $user['name'] . ' ' . $user['surname'] ?>
@@ -26,38 +27,38 @@
                 </div>
                 <div class="profile-usermenu">
                     <ul class="nav">
-                        <li class="active">
+                        <li class="<? echo $menuClass[0]; ?>">
                             <a href="/">
                                 <i class="glyphicon glyphicon-home"></i>
                                 Home
                             </a>
                         </li>
-                        <li>
+                        <li class="<? echo $menuClass[1]; ?>">
                             <a href="/<? echo $id; ?>/friends">
                                 <i class="fa fa-users"></i>
                                 Friends
                             </a>
                         </li>
 
-                        <li>
+                        <li class="<? echo $menuClass[2]; ?>">
                             <a href="">
                                 <i class="fa fa-envelope"></i>
                                 Messages
                             </a>
                         </li>
-                        <li>
+                        <li class="<? echo $menuClass[3]; ?>">
                             <a href="/<? echo $id; ?>/gallery">
                                 <i class="fa fa-picture-o"></i>
                                 Photos
                             </a>
                         </li>
-                        <li>
+                        <li class="<? echo $menuClass[4]; ?>">
                             <a href="">
                                 <i class="fa fa-newspaper-o"></i>
                                 News
                             </a>
                         </li>
-                        <li>
+                        <li class="<? echo $menuClass[5]; ?>">
                             <a href="">
                                 <i class="glyphicon glyphicon-cog"></i>
                                 Account Settings

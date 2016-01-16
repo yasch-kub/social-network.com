@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <div class="page-header text-muted">
             Information
-            <span class="pull-right glyphicon glyphicon-plus add-info-plus"></span>
+            <i class="fa fa-plus-square-o pull-right add-info-plus"></i>
         </div>
     </div>
 </div>
@@ -38,7 +38,7 @@
             <input name="value" placeholder="value" class="form-control">
         </div>
         <div class="col-md-4">
-            <span class="glyphicon glyphicon-plus information-plus"></span>
+            <i class="fa fa-plus-square-o information-plus"></i>
         </div>
     </div>
 </div>
@@ -71,8 +71,8 @@
                 <div class="col-sm-12">
                     <form id="postForm" class="form-horizontal well" role="form"
                           action="/addPost/<? echo $id; ?>">
-                                        <textarea name="message" class="form-control"
-                                                  placeholder="Left your post"></textarea>
+                        <textarea name="message" class="form-control"
+                                  placeholder="Left your post here..."></textarea>
                         <button class="btn btn-success pull-right" type="submit">Post</button>
                     </form>
                 </div>
