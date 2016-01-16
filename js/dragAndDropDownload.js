@@ -9,7 +9,11 @@ $(document).ready(function() {
         this.onover = onover;
         this.success = success;
 
-        this.setUpListeners();
+        if (this.dropzone != null
+            && this.onleave != null
+            && this.onover != null) {
+            this.setUpListeners();
+        }
     }
 
     fileUploader.prototype.setUpListeners = function() {
@@ -21,7 +25,6 @@ $(document).ready(function() {
         }, this);
 
         this.dropzone.ondragover = this.onover;
-
         this.dropzone.ondragleave = this.onleave;
     }
 ;
@@ -33,7 +36,9 @@ $(document).ready(function() {
                 isPhotoToSend = true
             }
             else
-                console.log('File "' + files[i].name + '" has wrong type! Supported types: ' + allowedFileTypes.toString());
+                console.log('File "' + files[i].name
+                    + '" has wrong type! Supported types: '
+                    + this.allowedFileTypes.toString());
 
         if (isPhotoToSend)
             this.request();
@@ -67,8 +72,11 @@ $(document).ready(function() {
         this.data = new FormData();
     };
 
-    var avatarUploader = new fileUploader('avatarDropzone', '/changeAvatar', avatarDragOver, avatarDragLeave, avatarUploadSuccess);
-    var photosUploader = new fileUploader('galleryDropZone', '/addPhotos', galleryDragEvent, galleryDragEvent, photosUploadSuccess);
+    var avatarUploader = new fileUploader('avatarDropzone', '/changeAvatar',
+        avatarDragOver, avatarDragLeave, avatarUploadSuccess);
+
+    var photosUploader = new fileUploader('galleryDropZone', '/addPhotos',
+        galleryDragEvent, galleryDragEvent, photosUploadSuccess);
 });
 
 function avatarDragOver() {
