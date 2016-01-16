@@ -84,25 +84,28 @@ class UserModel
             ]);
         $posts = [];
         foreach ($result['wall'] as $item){
-            $author = $collection->findOne(
-                [
-                    '_id' => intval($item['author'])
-                ],
-                [
-                    'name' => true,
-                    'surname' => true,
-                    'avatar' => ['$slice' => -1]
-                ]);
+            $comments = $item['comments'];
+            for($i = 0; $i < count($comments); $i++) {
+                $author = self::getAuthorPostInfoById($comments[$i]['authorId']);
+                $comments[$i]['name'] = $author['name'];
+                $comments[$i]['surname'] = $author['surname'];
+                $comments[$i]['avatar'] = $author['avatar'];
+            }
+
+            $author = self::getAuthorPostInfoById($item['authorId']);
 
             $posts[]=[
+                'id' => $item['id'],
                 'name' => $author['name'],
                 'surname' => $author['surname'],
                 'avatar' => $author['avatar'],
                 'message' => $item['message'],
                 'date' => $item['date'],
-                'id' => $item['author']
+                'authorId' => $item['authorId'],
+                'comments' => $comments,
             ];
         }
+
         return($posts);
     }
 
@@ -134,15 +137,20 @@ class UserModel
     {
         $db = Mdb::GetConnection();
         $collection = $db->selectCollection(Mdb::$dbname, 'user');
-        $date = getdate();
-        $date = sprintf("%s %s %s in %s:%s" ,$date['mday'], $date['month'], $date['year'], $date['hours'], $date['minutes']);
+
+        $date = self::getDateString();
+
+        $result = $collection->findOne(['_id' => intval($userId)], ['wall' => true, '_id' => false]);
+        $postCount = count($result['wall']);
+
         $collection->update([
                 '_id' => intval($userId)
             ],
             [
             '$push' => ['wall' =>
                 [
-                    'author' => self::getUserId(),
+                    'id' => $postCount + 1,
+                    'authorId' => self::getUserId(),
                     'date' => $date,
                     'message' => $message,
                     'comments' => [],
@@ -153,11 +161,13 @@ class UserModel
 
         $author = self::getAuthorPostInfoById(self::getUserId());
         return([
+            'id' => $postCount + 1,
+            'comments' => [],
             'date' => $date,
             'message' => $message,
             'name' => $author['name'],
             'surname' => $author['surname'],
-            'id' => self::getUserId(),
+            'authorId' => self::getUserId(),
             'avatar' => $author['avatar']
         ]);
 
@@ -167,10 +177,9 @@ class UserModel
     {
         $nPhoto = 4;
         if ($direction == 'left'){
-            if ($num <= 1)
-                return false;
-            elseif ($num <= 4){
-                $nPhoto = $num - 1;
+            $num -= 5;
+            if ($num <= 1) {
+                $nPhoto = $num + 4;
                 $num = 0;
             }
         }
@@ -219,6 +228,7 @@ class UserModel
             ]);
         return $result;
     }
+
     public static function addPhotos($photos)
     {
         $db = Mdb::GetConnection();
@@ -278,5 +288,34 @@ class UserModel
            'avatar' => ['$slice' => -1]
         ]);
         return $result;
+    }
+
+    public static function addPostComment($userId, $postId, $comment)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+
+        $result = $collection->findOne(['_id' => intval($userId)], ['wall' => true]);
+
+        $comment = ['message' => $comment, 'authorId' => self::getUserId(), 'date' => self::getDateString()];
+
+        for ($i = 0; $i < count($result['wall']); $i++)
+            if ($result['wall'][$i]['id'] == $postId) {
+                $result['wall'][$i]['comments'][] = $comment;
+                $collection->update(['_id' => intval($userId)], ['$set' => ['wall' => $result['wall']]], ['upsert' => true]);
+                $author = self::getAuthorPostInfoById(self::getUserId());
+                $comment['name'] = $author['name'];
+                $comment['surname'] = $author['surname'];
+                $comment['avatar'] = $author['avatar'];
+                return $comment;
+            }
+    }
+
+    public function getDateString()
+    {
+        $date = getdate();
+        $date = sprintf("%s %s %s in %s:%s" ,$date['mday'], $date['month'], $date['year'], $date['hours'], $date['minutes']);
+
+        return $date;
     }
 }

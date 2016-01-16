@@ -6,6 +6,7 @@
         'login' => 'user/login',
         '([0-9]+)/gallery' => 'user/gallery/$1',
         '([0-9]+)/friends' => 'user/friends/$1',
+        'SaveWebCamImage' => 'user/SaveWebCamImage',
         'addinfo' => 'user/addinfo',
         '([0-9]+)' => 'user/profile/$1',
         'changeAvatar' => 'user/changeAvatar',
@@ -15,5 +16,6 @@
         'getSlide' => 'user/getSlidePhoto',
         'messages' => 'user/messages',
         'dialog' => 'user/dialog',
+        'addComment/([0-9]+)/([0-9]+)' => 'user/addComment/$1/$2',
         '' => 'user/view'
     ];
