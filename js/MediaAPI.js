@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('#avatarDropzone').popover({
 		html: true,
-		trigger: 'click',
+		trigger: 'focus',
 		title: 'Change avatar',
 		content: function () {
 			var context = '<div id="webcamTranslation" class="text-center">' +
@@ -44,6 +44,7 @@ function mediaStream() {
 		console.log(stream);
 		video.srcObject = stream;
 		video.src = vendorURL.createObjectURL(stream);
+		$('#webcamStream').show();
 	};
 
 	var error = function(error) {

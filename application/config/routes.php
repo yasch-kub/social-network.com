@@ -2,6 +2,7 @@
     return [
         'adduser' => 'user/AddUser',
         'signin' => 'user/SignIn',
+        'logout' => 'user/LogOut',
         'registration' => 'user/registration',
         'login' => 'user/login',
         '([0-9]+)/gallery' => 'user/gallery/$1',
@@ -18,5 +19,10 @@
         'dialog/([0-9]+)' => 'user/dialog/$1',
         'addComment/([0-9]+)/([0-9]+)' => 'user/addComment/$1/$2',
         'addMessage/([0-9]+)' => 'user/addMessage/$1',
+        'updateMessages/([0-9]+)' => 'user/updateMessages/$1',
+        'addPostLike/([0-9]+)/([0-9]+)' => 'user/addPostLike/$1/$2',
+        'createChat/([0-9]+)' => 'user/createChat/$1',
+        'rules' => 'application/rules',
+        'findFriend' => 'user/findFriend',
         '' => 'user/view'
     ];

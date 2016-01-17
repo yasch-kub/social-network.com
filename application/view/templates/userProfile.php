@@ -4,7 +4,7 @@
         </div>
         <div class="col-md-3">
             <div class="profile-sidebar">
-                <div id="avatarDropzone" class="profile-userpic">
+                <div id="avatarDropzone" tabindex="0" class="profile-userpic">
                     <div class="dropzone">
                         <i class="fa fa-cloud-download fa-3x"></i>
                         <b>Drop file here</b>
@@ -25,9 +25,9 @@
 
                     <?php if(UserModel::getUserId() != $id): ?>
                         <?php if(!in_array($id, UserModel::getFollowers(UserModel::getUserId()))): ?>
-                            <button value="<? echo $id; ?>" id="follow" type="submit" class="btn btn-success btn-sm">Follow</button>
+                            <a href="" value="<? echo $id; ?>" id="follow" type="submit" class="btn btn-success btn-sm">Follow</a>
                         <?php endif; ?>
-                        <button id="message" type="button" class="btn btn-danger btn-sm">Message</button>
+                        <a href="/createChat/<? echo $id; ?>" value="<? echo $id; ?>" id="message" type="button" class="btn btn-danger btn-sm">Message</a>
                     <?php endif; ?>
                 </div>
                 <div class="profile-usermenu">
@@ -67,6 +67,12 @@
                             <a href="">
                                 <i class="glyphicon glyphicon-cog"></i>
                                 Account Settings
+                            </a>
+                        </li>
+                        <li class="exit">
+                            <a href="/logout">
+                                <i class="fa fa-power-off"></i>
+                                Exit
                             </a>
                         </li>
                     </ul>

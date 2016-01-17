@@ -3,14 +3,14 @@
         <p class="user-posts"><? echo $post['message'] ?></p>
         <p class="text-muted">
             <? echo $post['date'] ?> •
-            <a href="/<? echo $post['authorId'] ?>" class="text-muted"><? echo $post['name'] . ' ' . $post['surname'] ?></a>
+            <a href="/<? echo $post['authorId']; ?>" class="text-muted"><? echo $post['name'] . ' ' . $post['surname'] ?></a>
         </p>
         <p class="comment-like-block">
-            <a class="comment" href="#">
-                <i class="fa fa-comment"></i>
-            </a>
-            <a class="like" href="#">
-                <i class="fa fa-heart-o"></i>
+            <a class="<? echo $post['isLiked'] ? 'liked' : 'like'; ?>" href="/addPostLike/<? echo $id . '/' . $post['id']; ?>">
+                <span>
+                    <? echo $post['likeNumber']; ?>
+                </span>
+                <i class="fa <? echo $post['isLiked'] ? 'fa-heart' : 'fa-heart-o'; ?>"></i>
             </a>
         </p>
     </div>
