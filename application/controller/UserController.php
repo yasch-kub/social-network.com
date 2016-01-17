@@ -111,8 +111,8 @@ class UserController
         $followers = UserModel::getFollowersInfo($id);
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/friends.php';
-        $links = ['userProfile.css'];
-        $scripts = ['dragAndDropDownload.js', 'follow.js'];
+        $links = ['userProfile.css', 'webcam.css', 'friends.css'];
+        $scripts = ['dragAndDropDownload.js', 'follow.js', 'MediaAPI.js', 'friends.js'];
         include_once(view . '/templates/template.php');
     }
 
@@ -164,9 +164,10 @@ class UserController
         $id = UserModel::getUserId();
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/message.php';
-        $links = ['userProfile.css', 'messages.css'];
-        $scripts = ['dragAndDropDownload.js', 'follow.js'];
+        $links = ['userProfile.css', 'messages.css', 'webcam.css'];
+        $scripts = ['dragAndDropDownload.js', 'follow.js', 'MediaAPI.js'];
         $user = UserModel::getInfo($id);
+        $user['chats'] = [];
         $chatsIds = UserModel::getChats();
 
         for($i = 0; $i < count($chatsIds); $i++) {
@@ -195,11 +196,19 @@ class UserController
         $id = UserModel::getUserId();
         $user = UserModel::getInfo($id);
         $messages = ChatModel::getChatMessages($chatId);
-        $view = 'templates/userProfile.php';
-        $profile_content = 'templates/dialog.php';
-        $links = ['userProfile.css', 'dialog.css'];
-        $scripts = ['dragAndDropDownload.js', 'follow.js', 'messager.js'];
-        include_once(view . '/templates/template.php');
+
+        if (ChatModel::isUserInChat($chatId, UserModel::getUserId()))
+        {
+            $lastMessage = end($messages);
+            $timestamp = $lastMessage['timestamp'];
+            $view = 'templates/userProfile.php';
+            $profile_content = 'templates/dialog.php';
+            $links = ['userProfile.css', 'dialog.css', 'webcam.css'];
+            $scripts = ['dragAndDropDownload.js', 'follow.js', 'messager.js', 'MediaAPI.js'];
+            include_once(view . '/templates/template.php');
+        }
+        else
+            header('Location: /rules');
     }
 
     public static function ActionSaveWebCamImage()
@@ -223,8 +232,82 @@ class UserController
     public static function ActionAddMessage($chatId)
     {
         $message = self::clear($_POST['message']);
-        ChatModel::AddMessage($chatId, $message);
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        $message = ChatModel::AddMessage($chatId, $message);
+        $user = UserModel::getAuthorPostInfoById($message['senderId']);
+        $message['senderName'] = $user['name'] . ' ' . $user['surname'];
+        $message['avatar'] = $user['avatar'];
+
+        if (empty($_SERVER['HTTP_X_REQUESTED_WITH'])
+            || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) != 'xmlhttprequest')
+
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+
+        $response = ['status' => 'OK'];
+        exit(json_encode($response));
+
+    }
+
+    public static function ActionUpdateMessages($chatId)
+    {
+        $timestamp = json_decode(file_get_contents('php://input'));
+        $messages = ChatModel::getMessagesByTimestamp($chatId, $timestamp);
+
+        ob_start();
+        foreach ($messages as $message)
+            if($message['senderId'] == intval(UserModel::getUserId()))
+               include view . 'templates/message/messageRight.php';
+            else
+               include view . 'templates/message/messageLeft.php';
+        $template = ob_get_clean();
+
+        if(!empty($messages)) {
+            $lastMessage = end($messages);
+            reset($messages);
+            $timestamp = $lastMessage['timestamp'];
+        }
+
+        exit(json_encode(['template' => $template, 'timestamp' => $timestamp]));
+    }
+
+    public static function ActionAddPostLike($userId, $postId)
+    {
+        $result = UserModel::addPostLike($userId, $postId);
+        if($result);
+            exit(json_encode($result));
+        exit(json_encode(false));
+    }
+
+    public static function ActionLogOut()
+    {
+        unset($_SESSION['id']);
+        header('Location: /');
+    }
+
+    public static function ActionCreateChat($userId)
+    {
+        $chatId = ChatModel::findChatByMembers($userId, UserModel::getUserId());
+        if($chatId)
+            header('Location: /dialog/' . $chatId);
+        else {
+            $chatId = ChatModel::createChat($userId, UserModel::getUserId());
+            header('Location: /dialog/' . $chatId);
+        }
+    }
+
+    public static function ActionFindFriend()
+    {
+        $name = self::clear($_POST['name']);
+        $name = explode(' ', $name);
+        $surname = isset($name[1]) ? $name[1] : '';
+        $name = $name[0];
+
+        $followers = UserModel::findUser($name, $surname, 1);
+
+        if (empty($followers))
+            exit('User was not found...');
+        foreach($followers as $follower)
+            include view . 'templates/friend.php';
+
     }
 
     public static function ActionDellInfo()

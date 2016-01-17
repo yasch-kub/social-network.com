@@ -12,8 +12,6 @@
      margin: 5px 0px;
  }
 
-
-
 #webcamTranslation, .popover {
     font-family: Roboto;
 }
@@ -25,4 +23,8 @@
 
 #avatarDropzone:hover {
     cursor: pointer;
+}
+
+#webcamStream {
+    display: none;
 }

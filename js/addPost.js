@@ -22,4 +22,34 @@ $(document).ready(function(){
                 form.trigger('reset');
             });
     });
+
+    $('#posts').on('mouseenter mouseleave', '.like', function(event) {
+        var i = $(this).find('i')
+        if (event.type == 'mouseenter') {
+            i.removeClass('fa-heart-o');
+            i.addClass('fa-heart');
+        } else {
+            i.removeClass('fa-heart');
+            i.addClass('fa-heart-o');
+        }
+    });
+
+    $('#posts').on('click', '.like', function() {
+        event.preventDefault();
+        var url = $(this).attr('href');
+        var like = $(this);
+        console.log(url);
+        $.post(url, '', function(response) {
+            window.link = $(this);
+            if (response) {
+                like.children('span').html(response);
+                like.removeClass('like');
+                like.addClass('liked');
+                var i = like.find('i');
+                console.log(i);
+                i.removeClass('fa-heart-o');
+                i.addClass('fa-heart');
+            }
+        }, 'json');
+    })
 });

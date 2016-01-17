@@ -105,6 +105,8 @@ class UserModel
                 'date' => $item['date'],
                 'authorId' => $item['authorId'],
                 'comments' => $comments,
+                'likeNumber' => count($item['like']),
+                'isLiked' => in_array(self::getUserId(), $item['like'])
             ];
         }
 
@@ -550,5 +552,74 @@ class UserModel
                 'save' => 'Save'
             ];
         }
+    }
+
+    public static function addPostLike($userId, $postId)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+
+        $result = $collection->findOne([
+            '_id' => intval($userId)
+        ],[
+            'wall' => true
+        ]);
+
+        $nLikes = 0;
+
+        for($i = 0; $i < count($result['wall']); $i++) {
+            if ($result['wall'][$i]['id'] == $postId)
+            {
+                if (in_array(UserModel::getUserId(), $result['wall'][$i]['like']))
+                    return false;
+                else {
+                    $result['wall'][$i]['like'][] = UserModel::getUserId();
+                    $nLikes = count($result['wall'][$i]['like']);
+
+                    $collection->update([
+                        '_id' => intval($userId)
+                    ],[
+                        '$set' => ['wall' => $result['wall']]
+                    ]);
+                }
+            }
+        }
+
+        return $nLikes;
+    }
+
+    public static function findUser($name, $surname, $type = 1)
+    {
+        $query  = [];
+        switch($type) {
+            case 1: {
+//                $query = [
+//                    'name' => $name,
+//                    'surname' => $surname
+//                ];
+                $query = [
+                    'name' => ['$regex' => $name, '$options' => 'i'],
+                    'surname' => ['$regex' => $surname, '$options' => 'i']
+                ];
+                break;
+            }
+        }
+
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+
+        $users = $collection->find($query, [
+            'name' => true,
+            'surname' => true,
+            'avatar' => ['$slice' => -1],
+        ]);
+
+        $result = [];
+
+        foreach($users as $item) {
+            $result[] = $item;
+        }
+
+        return $result;
     }
 }

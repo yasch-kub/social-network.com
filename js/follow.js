@@ -1,7 +1,8 @@
 $(document).ready(function(){
-    $('#follow').click(function(){
+    $('#follow').click(function(event){
+        event.preventDefault();
         var id = $(this).attr('value');
-        $(this).hide();
+        $(this).remove();
         $.post('follow', id, function(response){
             console.log(response);
             $('body').append(response);

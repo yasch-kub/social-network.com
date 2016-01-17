@@ -1,53 +1,55 @@
 $(document).ready(function() {
-    var messager = new Messager()
+    var messager = new Messager('ul.chat', '#chatForm');
+    window.messager = messager;
 });
 
-function Messager() {
-    var form = $('#chatForm input[type=text]');
-    this.checkUrl = '/';
-    this.url = form.attr('action');
-    this.message = form.val().trim();
-    this.messageBox = $('ul.chat');
+function Messager(messageBoxSelector, formSelector) {
+    this.messageBox = $(messageBoxSelector);
+    this.form = $(formSelector);
+    this.sendUrl = this.form.attr('action');
+
+    this.checkUrl = this.form.attr('connect');
+    this.form.removeAttr('connect');
+
+    this.timestamp = this.form.attr('timestamp');
+    this.form.removeAttr('timestamp');
+
+    console.log(this.timestamp);
+
+    // Add listener to send button
+    this.form.submit($.proxy(function(event) {
+        event.preventDefault();
+        this.send();
+    }, this));
+
+    console.log(this.sendUrl);
     this.connect();
 }
 
-messager.prototype.send = function() {
-    $.post(url, this.message, this.success);
+Messager.prototype.send = function() {
+    $.post(this.sendUrl, this.form.serialize(), $.proxy(this.success, this), 'json');
+    this.form.trigger('reset');
 };
 
-messager.prototype.success = function(response) {
-    this.messageBox.append(template).addClass('pull-right').find('strong').addClass('pull-right');
-}
-
-message.prototype.template = function(name, text, image, date) {
-    var template =
-        '<li class="right clearfix"><span class="chat-img">' +
-        '<img src="' + image + '" alt="User Avatar" class="img-circle" />' +
-        '</span>' +
-        '<div class="chat-body clearfix">' +
-        '<div class="header">' +
-        '<small class=" text-muted"><span class="glyphicon glyphicon-time"></span>' + date + '</small>' +
-        '<strong class="primary-font">' + name + '</strong>' +
-        '</div>' +
-        '<p>' +
-        text +
-        '</p>' +
-        '</div>' +
-        '</li>';
-
-    return template;
-}
-
-messager.prototype.connect = function() {
-    setTimeout(function() {
-        $.post('/checkChanges', '', this.update, 'json');
-    }, 5000);
-}
-
-messager.prototype.update = function(response) {
-    response.forEach(function(item) {
-        var template = this.template(item.name, item.text, item.image, item.date).;
-        this.messageBox.append(template).addClass('pull-left');
-    });
+Messager.prototype.printMessage = function(message) {
+    this.messageBox.append(message);
 };
 
+Messager.prototype.success = function(response) {
+    if (response.status == 'OK')
+        console.log('Message saved');
+};
+
+Messager.prototype.update = function(response) {
+    if (response.template != 'undefined')
+        this.printMessage(response.template);
+    this.timestamp = response.timestamp;
+
+    console.log(response);
+};
+
+Messager.prototype.connect = function() {
+    setInterval($.proxy(function() {
+        $.post(this.checkUrl, JSON.stringify(this.timestamp), $.proxy(this.update, this), 'json');
+    }, this), 3000);
+};
