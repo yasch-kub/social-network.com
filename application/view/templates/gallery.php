@@ -5,30 +5,13 @@
         </div>
     </div>
 </div>
-
-<div id="galleryDropZone">
-    <span>
-        Drop photos here to download
-    </span>
-</div>
-
-<!--<div class="panel panel-default">-->
-<!--    <div class="panel-body row">-->
-<!--        <div class="col-md-3">-->
-<!--            sdgsgdfg-->
-<!--        </div>-->
-<!--        <div class="col-md-8">-->
-<!--            <div class="progress">-->
-<!--                <div class="progress-bar progress-bar-success" role="progressbar">-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-md-1">-->
-<!--            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-<!--        </div>-->
-<!---->
-<!--    </div>-->
-<!--</div>-->
+<?php if($id == UserModel::getUserId()): ?>
+    <div id="galleryDropZone">
+        <span>
+            Drop photos here to download
+        </span>
+    </div>
+<?php endif; ?>
 
 <div class="row" id="galleryPhotos">
     <?php foreach($photos['photos'] as $photo):?>
@@ -36,6 +19,9 @@
         <a>
             <img class="img-responsive" src="/application/data/users/<? echo $id; ?>/photos/<? echo $photo; ?>">
         </a>
+        <?php if($id == UserModel::getUserId()): ?>
+            <a class="pull-right"><i class="fa fa-trash"></i></a>
+        <?php endif; ?>
     </div>
     <?php endforeach; ?>
 </div>

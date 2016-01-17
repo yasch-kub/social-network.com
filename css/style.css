@@ -19,3 +19,11 @@
 .dragover{
     border-color: #1b6d85;
 }
+
+.dell-info{
+    display: none;
+}
+
+.val{
+    cursor: pointer;
+}

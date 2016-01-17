@@ -287,3 +287,7 @@ body {
 .comment-box > form {
     width: 70%;
 }
+
+.fa-reply-all{
+    cursor: pointer;
+}

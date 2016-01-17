@@ -1,14 +1,47 @@
+<style>
+    <?php if(isset($userStyle['backgroundcolor'])): ?>
+        body{
+            background-color: <? echo $userStyle['backgroundcolor'] ?>;
+        }
+    <?php endif; ?>
+
+    <?php if(isset($userStyle['usermenucolor'])): ?>
+        .profile-usermenu ul li a {
+            color: <? echo $userStyle['usermenucolor'] ?>;
+        }
+    <?php endif; ?>
+
+    <?php if(isset($userStyle['usermenuhover'])): ?>
+        .profile-usermenu ul li a:hover {
+            color: <? echo $userStyle['usermenuhover'] ?>;
+        }
+    <?php endif; ?>
+
+
+    <?php if(isset($userStyle['usermenuactive'])): ?>
+        .profile-usermenu ul li.active a {
+            color: <? echo $userStyle['usermenuactive'] ?>;
+            border-left: 2px solid <? echo $userStyle['usermenuactive'] ?>;
+        }
+    <?php endif; ?>
+</style>
 <div class="container">
     <div class="row profile">
         <div class="col-md-1">
         </div>
         <div class="col-md-3">
             <div class="profile-sidebar">
-                <div id="avatarDropzone" class="profile-userpic">
+                <div
+                    <?php if($id == UserModel::getUserId()): ?>
+                        id="avatarDropzone"
+                    <?php endif; ?>
+                    class="profile-userpic">
+
                     <div class="dropzone">
                         <i class="fa fa-cloud-download fa-3x"></i>
                         <b>Drop file here</b>
                     </div>
+
                     <img src="<? echo '/application/data/users/' . $id . '/' . $user['avatar'][0]; ?>"
                          class="img-responsive" alt="">
                 </div>
@@ -58,13 +91,7 @@
                             </a>
                         </li>
                         <li class="<? echo $menuClass[4]; ?>">
-                            <a href="">
-                                <i class="fa fa-newspaper-o"></i>
-                                News
-                            </a>
-                        </li>
-                        <li class="<? echo $menuClass[5]; ?>">
-                            <a href="">
+                            <a href="/accountSetting">
                                 <i class="glyphicon glyphicon-cog"></i>
                                 Account Settings
                             </a>

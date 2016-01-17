@@ -1,7 +1,7 @@
 $(document).ready(function(){
     var curImageParent;
 
-    $(".img-responsive").click(function(){
+    $("#galleryPhotos .img-responsive").click(function(){
         curImageParent = $(this).parents('.thumb');
         $('.carousel-inner').html($(this).clone());
         $("#modal-gallery").modal("show");
@@ -18,6 +18,15 @@ $(document).ready(function(){
             curImageParent = curImageParent.next();
             changePhoto(curImageParent);
         }
+    });
+
+    $('#galleryPhotos').on('click', '.fa-trash', function(){
+        var imgName = $(this).parent().prev().find('img').attr('src').split('/');
+        imgName = imgName[imgName.length - 1];
+        $(this).parent().parent().remove();
+        $.post('/dellPhotos', JSON.stringify(imgName), function(response){
+            console.log(response);
+        });
     });
     
 });

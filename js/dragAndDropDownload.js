@@ -100,7 +100,8 @@ function photosUploadSuccess(response) {
     console.log(images);
     images.forEach(function(image) {
         console.log(image);
-        var div = '<div class="col-md-3 col-lg-4 col-sm-4 col-xs-12 thumb"><a><img class="img-responsive" src="' + image + '"></a></div>';
+        var div = '<div class="col-md-3 col-lg-4 col-sm-4 col-xs-12 thumb"><a><img class="img-responsive" src="' + image + '"></a>' +
+            '<a class="pull-right"><i class="fa fa-trash"></i></a></div>';
         $('#galleryPhotos').append(div);
     });
     console.log(images);

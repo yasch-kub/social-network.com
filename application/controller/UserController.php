@@ -43,7 +43,8 @@ class UserController
 
     public static function ActionProfile($id)
     {
-        $menuClass = [0 => 'active', 1 => '', 2 => '', 3 => '', 4 => '', 5 => ''];
+        $menuClass = [0 => 'active', 1 => '', 2 => '', 3 => '', 4 => ''];
+        $userStyle = UserModel::getUserStyle();
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/main.php';
         $links = ['userProfile.css', 'webcam.css'];
@@ -90,7 +91,8 @@ class UserController
 
     public static function ActionGallery($id)
     {
-        $menuClass = [0 => '', 1 => '', 2 => '', 3 => 'active', 4 => '', 5 => ''];
+        $userStyle = UserModel::getUserStyle();
+        $menuClass = [0 => '', 1 => '', 2 => '', 3 => 'active', 4 => ''];
         $user = UserModel::getInfo($id);
         $photos = UserModel::getAllPhotos($id);
         $view = 'templates/userProfile.php';
@@ -102,7 +104,8 @@ class UserController
 
     public static function ActionFriends($id)
     {
-        $menuClass = [0 => '', 1 => 'active', 2 => '', 3 => '', 4 => '', 5 => ''];
+        $userStyle = UserModel::getUserStyle();
+        $menuClass = [0 => '', 1 => 'active', 2 => '', 3 => '', 4 => ''];
         $user = UserModel::getInfo($id);
         $photos = UserModel::getAllPhotos($id);
         $followers = UserModel::getFollowersInfo($id);
@@ -156,7 +159,8 @@ class UserController
 
     public function actionMessages()
     {
-        $menuClass = [0 => '', 1 => '', 2 => 'active', 3 => '', 4 => '', 5 => ''];
+        $userStyle = UserModel::getUserStyle();
+        $menuClass = [0 => '', 1 => '', 2 => 'active', 3 => '', 4 => ''];
         $id = UserModel::getUserId();
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/message.php';
@@ -186,6 +190,8 @@ class UserController
 
     public static function actionDialog($chatId)
     {
+        $menuClass = [0 => '', 1 => '', 2 => 'active', 3 => '', 4 => ''];
+        $userStyle = UserModel::getUserStyle();
         $id = UserModel::getUserId();
         $user = UserModel::getInfo($id);
         $messages = ChatModel::getChatMessages($chatId);
@@ -219,5 +225,67 @@ class UserController
         $message = self::clear($_POST['message']);
         ChatModel::AddMessage($chatId, $message);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
+    }
+
+    public static function ActionDellInfo()
+    {
+        $data = file_get_contents('php://input');
+        $data = json_decode($data, true);
+        if(UserModel::dellInfo($data))
+            exit('ok');
+        else
+            exit('failed');
+    }
+
+    public static function ActionChangeInfo()
+    {
+        $data = file_get_contents('php://input');
+        $data = json_decode($data, true);
+        if(UserModel::changeInfo($data))
+            exit('ok');
+
+        exit('failed');
+
+    }
+
+    public static function ActionDellPhotos()
+    {
+        $data = file_get_contents('php://input');
+        $data = json_decode($data, true);
+        unlink(root . '/application/data/users/'. UserModel::getUserId() .'/photos/'.$data);
+        if(UserModel::delletePhoto($data))
+            exit('ok');
+
+        exit('failed');
+    }
+
+    public static function ActionAccountSetting(){
+        $menuClass = [0 => '', 1 => '', 2 => '', 3 => '', 4 => 'active'];
+        $id = UserModel::getUserId();
+        $userStyle = UserModel::getUserStyle();
+        $user = UserModel::getInfo($id);
+        $view = 'templates/userProfile.php';
+        $profile_content = 'templates/accountSetting.php';
+        $links = ['userProfile.css'];
+        $scripts = ['dragAndDropDownload.js', 'accountsetting.js'];
+        include_once(view . '/templates/template.php');
+    }
+
+    public static function ActionChangeUserStyle()
+    {
+        $data = file_get_contents('php://input');
+        $data = json_decode($data, true);
+
+        if(UserModel::setUserStyle($data))
+            exit('ok');
+
+        exit('failed');
+    }
+
+    public static function ActionRevertStyle()
+    {
+        if(UserModel::revertStyle())
+            exit('ok');
+        exit('failed');
     }
 }

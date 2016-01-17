@@ -18,5 +18,11 @@
         'dialog/([0-9]+)' => 'user/dialog/$1',
         'addComment/([0-9]+)/([0-9]+)' => 'user/addComment/$1/$2',
         'addMessage/([0-9]+)' => 'user/addMessage/$1',
+        'dellinfo' => 'user/dellInfo',
+        'changeInfo' => 'user/changeInfo',
+        'dellPhotos' => 'user/dellPhotos',
+        'accountSetting' => 'user/accountSetting',
+        'changeUserStyle' => 'user/changeUserStyle',
+        'revertStyle' => 'user/revertStyle',
         '' => 'user/view'
     ];

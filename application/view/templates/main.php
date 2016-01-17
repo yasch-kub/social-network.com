@@ -2,7 +2,9 @@
     <div class="col-sm-12">
         <div class="page-header text-muted">
             Information
-            <i class="fa fa-plus-square-o pull-right add-info-plus"></i>
+            <?php if ($id == UserModel::getUserId()):?>
+                <i class="fa fa-plus-square-o pull-right add-info-plus"></i>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -22,11 +24,14 @@
     </div>
 
     <?php   foreach ($user['information'] as $item): ?>
-        <div class="profile-property col-md-3">
+        <div class="info profile-property col-md-3">
             <? echo key($item); ?>
         </div>
-        <div class="col-md-9">
+        <div class="val col-md-9">
             <? echo current($item); ?>
+            <?php if ($id == UserModel::getUserId()):?>
+                <i class="pull-right dell-info fa fa-minus-square-o"></i>
+            <?php endif; ?>
         </div>
     <?php endforeach; ?>
 

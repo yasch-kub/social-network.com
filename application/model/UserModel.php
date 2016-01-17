@@ -22,7 +22,8 @@ class UserModel
             'photos' => [],
             'followers' => [],
             'information' => [],
-            'chats' => []
+            'chats' => [],
+            'configstyle' => []
         ]);
 
 
@@ -333,5 +334,221 @@ class UserModel
         $date = sprintf("%s %s %s in %s:%s" ,$date['mday'], $date['month'], $date['year'], $date['hours'], $date['minutes']);
 
         return $date;
+    }
+
+    public static function dellInfo($data)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->update([
+            '_id' => UserModel::getUserId()
+        ],[
+            '$pull' => ['information' => [$data['info'] => $data['val']]]
+        ]);
+
+        if($result['ok'] == 1)
+            return true;
+    }
+
+    public static function changeInfo($data)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->update([
+            '_id' => UserModel::getUserId()
+        ],[
+            '$pull' => ['information' => [$data['info'] => $data['prevValue']]]
+        ]);
+
+        if($result['ok'] == 1)
+        {
+            $result = $collection->update([
+                '_id' => UserModel::getUserId()
+            ],[
+                '$push' => ['information' => [$data['info'] => $data['val']]]
+            ]);
+        }
+        else
+            return false;
+
+        if($result['ok'] == 1)
+            return true;
+    }
+
+    public static function delletePhoto($photoName)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->update([
+            '_id' => UserModel::getUserId()
+        ],[
+            '$pull' => ['photos' => $photoName]
+        ]);
+
+        return $result['ok'] == 1 ? true : false;
+    }
+
+    public static function getUserStyle()
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->findOne([
+            '_id' => UserModel::getUserId()
+        ],[
+            'configstyle' => true
+        ]);
+
+
+        foreach ($result['configstyle'] as $item){
+            foreach ($item as $key => $value)
+                $style[$key] = $value;
+        }
+        return $style;
+    }
+
+    public static function setUserStyle($style){
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->findOne([
+            '_id' => self::getUserId()
+        ],
+        [
+                'configstyle' => true,
+                '_id' => false
+        ]);
+
+        foreach ($result['configstyle'] as $item) {
+            foreach ($item as $key => $value) {
+                if (isset($style[$key]))
+                    $config[$key] = $style[$key];
+                else
+                    $config[$key] = $value;
+            }
+        }
+
+        foreach($style as $key => $value){
+            if (!isset($config[$key]))
+                $config[$key] = $value;
+        }
+
+        foreach ($config as $key => $value) {
+            $userStyle[] = [$key => $value];
+        }
+
+        $res = $collection->update([
+            '_id' => self::getUserId()
+        ],
+            [
+                '$set' =>['configstyle' => $userStyle]
+            ]);
+
+        return $res['ok'] == 1 ? true : false;
+    }
+
+    public static function revertStyle()
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->update([
+            '_id' => self::getUserId()
+            ],
+            [
+                '$set' =>['configstyle' => []]
+            ]);
+
+        return $result['ok'] == 1 ? true : false;
+
+    }
+
+    public static function getLangArray($lng)
+    {
+        if ($lng = 'eng') {
+            return [
+                //login//
+                'login' => 'Login',
+                'email' => 'Email',
+                'password' => 'Password',
+                'remember' => 'remember',
+                'newuser' => 'New user?',
+                'createaccount' => 'Create new account',
+                //registration//
+                'regname' => 'Full name',
+                'confirmpass' => 'Confirm password',
+                'agree' => 'i agree with terms',
+                'haveaccount' => 'Already have an account?',
+                'loghere' => 'Login here',
+                //menu//
+                'home' => 'Home',
+                'friends' => 'Friends',
+                'messages' => 'Messages',
+                'photos' => 'Photos',
+                'setting' => 'Account Settings',
+                //page//
+                'information' => 'Information',
+                'avatardrop' => 'Drop file here',
+                'name' => 'Name',
+                'lastname' => 'Lastname',
+                'wall' => 'Wall',
+                'leftpost' => 'Left your post here...',
+                'post' => 'Post',
+                'comment' => 'Comment...',
+                'send' => 'Send',
+                'gallery' => 'Gallery',
+                'drop' => 'Drop photos here to download',
+                'bg' => 'BACKGROUND COLOR:',
+                'usercolor' => 'user menu color:',
+                'userhover' => 'user menu hover color:',
+                'useractive' => 'user menu active color:',
+                'change' => 'Change',
+                'dialogmess' => 'Message...',
+                'changeavatar' => 'Change avatar',
+                'snapshot' => 'Snapshot',
+                'save' => 'Save'
+            ];
+        }
+        elseif ($lng = 'ukr') {
+            return [
+                //login//
+                'login' => '',
+                'email' => 'Email',
+                'password' => 'Password',
+                'remember' => 'remember',
+                'newuser' => 'New user?',
+                'createaccount' => 'Create new account',
+                //registration//
+                'regname' => 'Full name',
+                'confirmpass' => 'Confirm password',
+                'agree' => 'i agree with terms',
+                'haveaccount' => 'Already have an account?',
+                'loghere' => 'Login here',
+                //menu//
+                'home' => 'Home',
+                'friends' => 'Friends',
+                'messages' => 'Messages',
+                'photos' => 'Photos',
+                'setting' => 'Account Settings',
+                //page//
+                'information' => 'Information',
+                'avatardrop' => 'Drop file here',
+                'name' => 'Name',
+                'lastname' => 'Lastname',
+                'wall' => 'Wall',
+                'leftpost' => 'Left your post here...',
+                'post' => 'Post',
+                'comment' => 'Comment...',
+                'send' => 'Send',
+                'gallery' => 'Gallery',
+                'drop' => 'Drop photos here to download',
+                'bg' => 'BACKGROUND COLOR:',
+                'usercolor' => 'user menu color:',
+                'userhover' => 'user menu hover color:',
+                'useractive' => 'user menu active color:',
+                'change' => 'Change',
+                'dialogmess' => 'Message...',
+                'changeavatar' => 'Change avatar',
+                'snapshot' => 'Snapshot',
+                'save' => 'Save'
+            ];
+        }
     }
 }
