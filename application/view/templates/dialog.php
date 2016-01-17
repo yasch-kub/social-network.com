@@ -1,60 +1,57 @@
 <div class="panel-body">
     <ul class="chat">
-        <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                        </span>
-            <div class="chat-body clearfix">
-                <div class="header">
-                    <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-                        <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                    dolor, quis ullamcorper ligula sodales.
-                </p>
-            </div>
-        </li>
-        <li class="right clearfix"><span class="chat-img pull-right">
-                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
-                        </span>
-            <div class="chat-body clearfix">
-                <div class="header">
-                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>13 mins ago</small>
-                    <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                    dolor, quis ullamcorper ligula sodales.
-                </p>
-            </div>
-        </li>
-        <li class="left clearfix"><span class="chat-img pull-left">
-                            <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                        </span>
-            <div class="chat-body clearfix">
-                <div class="header">
-                    <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-                        <span class="glyphicon glyphicon-time"></span>14 mins ago</small>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                    dolor, quis ullamcorper ligula sodales.
-                </p>
-            </div>
-        </li>
-        <li class="right clearfix"><span class="chat-img pull-right">
-                            <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
-                        </span>
-            <div class="chat-body clearfix">
-                <div class="header">
-                    <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>15 mins ago</small>
-                    <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                </div>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                    dolor, quis ullamcorper ligula sodales.
-                </p>
-            </div>
-        </li>
+        <?php foreach ($messages as $message): ?>
+            <?php if($message['senderId'] == intval(UserModel::getUserId())): ?>
+                <li class="right clearfix">
+                    <span class="chat-img pull-right">
+                        <img src="<? echo '/application/data/users/' . $message['senderId'] . '/' . $message['avatar'][0]; ?>" class="img-circle" />
+                    </span>
+                    <div class="chat-body clearfix">
+                        <div class="header">
+                            <small class=" text-muted">
+                                <span class="glyphicon glyphicon-time"></span>
+                                <? echo $message['date']; ?>
+                            </small>
+                            <strong class="pull-right primary-font">
+                                <? echo $message['senderName']; ?>
+                            </strong>
+                        </div>
+                        <p>
+                            <? echo $message['text']; ?>
+                        </p>
+                    </div>
+                </li>
+            <?php else: ?>
+                <li class="left clearfix">
+                    <span class="chat-img pull-left">
+                        <img src="<? echo '/application/data/users/' . $message['senderId'] . '/' . $message['avatar'][0]; ?>" class="img-circle" />
+                    </span>
+                    <div class="chat-body clearfix">
+                        <div class="header">
+                            <strong class="primary-font">
+                                <? echo $message['senderName']; ?>
+                            </strong>
+                            <small class="pull-right text-muted">
+                                <span class="glyphicon glyphicon-time"></span>
+                                <? echo $message['date']; ?>
+                            </small>
+                        </div>
+                        <p>
+                            <? echo $message['text']; ?>
+                        </p>
+                    </div>
+                </li>
+            <?php endif; ?>
+        <?php endforeach; ?>
     </ul>
+    <div class="row">
+        <form method='post' role="form" id="chatForm" action="/addMessage/<? echo $chatId; ?>">
+            <div class="input-group">
+                <input type="text" name="message" class="form-control" placeholder="Message...">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-success form-control">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>

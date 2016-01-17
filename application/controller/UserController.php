@@ -102,6 +102,7 @@ class UserController
 
     public static function ActionFriends($id)
     {
+        $menuClass = [0 => '', 1 => 'active', 2 => '', 3 => '', 4 => '', 5 => ''];
         $user = UserModel::getInfo($id);
         $photos = UserModel::getAllPhotos($id);
         $followers = UserModel::getFollowersInfo($id);
@@ -155,23 +156,43 @@ class UserController
 
     public function actionMessages()
     {
+        $menuClass = [0 => '', 1 => '', 2 => 'active', 3 => '', 4 => '', 5 => ''];
         $id = UserModel::getUserId();
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/message.php';
         $links = ['userProfile.css', 'messages.css'];
         $scripts = ['dragAndDropDownload.js', 'follow.js'];
         $user = UserModel::getInfo($id);
+        $chatsIds = UserModel::getChats();
+
+        for($i = 0; $i < count($chatsIds); $i++) {
+            $memberId = current(array_diff(ChatModel::getChatMembers($chatsIds[$i]), [UserModel::getUserId()]));
+            $member = UserModel::getAuthorPostInfoById($memberId);
+
+            $user['chats'][$i]['id'] = $chatsIds[$i];
+            $user['chats'][$i]['memberId'] = $memberId;
+            $user['chats'][$i]['memberName'] = $member['name'] . ' ' . $member['surname'];
+            $user['chats'][$i]['avatar'] = $member['avatar'][0];
+
+            $message = ChatModel::getLastChatMessage($chatsIds[$i]);
+            $message = $message['text'];
+            $user['chats'][$i]['lastMessage'] = $message;
+        }
+
+       // var_dump($user);
+
         include_once(view . '/templates/template.php');
     }
 
-    public static function actionDialog()
+    public static function actionDialog($chatId)
     {
         $id = UserModel::getUserId();
         $user = UserModel::getInfo($id);
+        $messages = ChatModel::getChatMessages($chatId);
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/dialog.php';
         $links = ['userProfile.css', 'dialog.css'];
-        $scripts = ['dragAndDropDownload.js', 'follow.js'];
+        $scripts = ['dragAndDropDownload.js', 'follow.js', 'messager.js'];
         include_once(view . '/templates/template.php');
     }
 
@@ -191,5 +212,12 @@ class UserController
         UserModel::changeAvatar($name);
         $path = '/application/data/users/' .UserModel::getUserId(). '/';
         exit(json_encode($path . $name));
+    }
+
+    public static function ActionAddMessage($chatId)
+    {
+        $message = self::clear($_POST['message']);
+        ChatModel::AddMessage($chatId, $message);
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 }

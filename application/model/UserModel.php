@@ -21,7 +21,8 @@ class UserModel
             'wall' => [],
             'photos' => [],
             'followers' => [],
-            'information' => []
+            'information' => [],
+            'chats' => []
         ]);
 
 
@@ -309,6 +310,21 @@ class UserModel
                 $comment['avatar'] = $author['avatar'];
                 return $comment;
             }
+    }
+
+    public static function getChats()
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+
+        $result = $collection->findOne([
+            '_id' => intval(UserModel::getUserId())
+        ], [
+            'chats' => true,
+            '_id' => false
+        ]);
+
+        return $result['chats'];
     }
 
     public function getDateString()

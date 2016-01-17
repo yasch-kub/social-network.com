@@ -15,7 +15,8 @@
         'addPost/([0-9]+)' => 'user/addPost/$1',
         'getSlide' => 'user/getSlidePhoto',
         'messages' => 'user/messages',
-        'dialog' => 'user/dialog',
+        'dialog/([0-9]+)' => 'user/dialog/$1',
         'addComment/([0-9]+)/([0-9]+)' => 'user/addComment/$1/$2',
+        'addMessage/([0-9]+)' => 'user/addMessage/$1',
         '' => 'user/view'
     ];
