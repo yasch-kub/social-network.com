@@ -4,9 +4,8 @@ class Mdb
     public static $dbname;
     public static function GetConnection()
     {
-        $config = include(root . '/application/config/mongo_db_config.php');
-        self::$dbname = $config['dbname'];
-        $db = new MongoClient("mongodb://" .$config['dbhost']. ":27017/" .$config['dbname']);
+        self::$dbname = 'social-network';
+        $db = new MongoClient('mongodb://user:d32lVrQg9lhh@ds047335.mongolab.com:47335/social-network');
         return $db;
     }
 }
