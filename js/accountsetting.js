@@ -23,4 +23,13 @@ $(document).ready(function(){
             location.reload();
         });
     });
+
+    $('#changeLang').change(function(){
+        console.log($(this).val());
+        $.post('/changeLang', $(this).val(), function(response){
+            console.log('Language changed');
+            location.reload(true);
+        })
+    });
+
 });

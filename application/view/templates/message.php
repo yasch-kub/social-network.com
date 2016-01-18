@@ -1,7 +1,7 @@
 <div class="row" id="featured">
     <div class="col-sm-12">
         <div class="page-header text-muted">
-            Messages
+            <? echo $dictionary['messages'] ?>
         </div>
     </div>
 </div>

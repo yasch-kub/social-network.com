@@ -23,7 +23,8 @@ class UserModel
             'followers' => [],
             'information' => [],
             'chats' => [],
-            'configstyle' => []
+            'configstyle' => [],
+            'lng' => 'eng'
         ]);
 
 
@@ -462,9 +463,11 @@ class UserModel
 
     }
 
-    public static function getLangArray($lng)
+    public static function getLangArray()
     {
-        if ($lng = 'eng') {
+        $lng = self::getLanguage();
+
+        if ($lng == 'eng') {
             return [
                 //login//
                 'login' => 'Login',
@@ -485,11 +488,14 @@ class UserModel
                 'messages' => 'Messages',
                 'photos' => 'Photos',
                 'setting' => 'Account Settings',
+                'exit' => 'Exit',
                 //page//
+                'message' => 'Message',
+                'follow' => 'Follow',
                 'information' => 'Information',
                 'avatardrop' => 'Drop file here',
-                'name' => 'Name',
-                'lastname' => 'Lastname',
+                'name' => 'Name:',
+                'lastname' => 'Lastname:',
                 'wall' => 'Wall',
                 'leftpost' => 'Left your post here...',
                 'post' => 'Post',
@@ -497,7 +503,7 @@ class UserModel
                 'send' => 'Send',
                 'gallery' => 'Gallery',
                 'drop' => 'Drop photos here to download',
-                'bg' => 'BACKGROUND COLOR:',
+                'bg' => 'background color:',
                 'usercolor' => 'user menu color:',
                 'userhover' => 'user menu hover color:',
                 'useractive' => 'user menu active color:',
@@ -505,51 +511,68 @@ class UserModel
                 'dialogmess' => 'Message...',
                 'changeavatar' => 'Change avatar',
                 'snapshot' => 'Snapshot',
-                'save' => 'Save'
+                'save' => 'Save',
+                'settplaceholder' => 'Please enter color (example #fff)',
+                'possible' => 'Possible friend',
+                'findfriends' => 'Find friends...',
+                'val' => 'Value',
+                'rules' => 'How to use our network',
+                'rules1' => 'Don`t stick your nose in other people`s business!',
+                'notfound' => 'User was not found...'
             ];
         }
-        elseif ($lng = 'ukr') {
+        elseif ($lng == 'ukr') {
             return [
                 //login//
-                'login' => '',
-                'email' => 'Email',
-                'password' => 'Password',
-                'remember' => 'remember',
-                'newuser' => 'New user?',
-                'createaccount' => 'Create new account',
+                'login' => 'Вхід',
+                'email' => 'Електронна адреса',
+                'password' => 'Пароль',
+                'remember' => 'запам`ятати',
+                'newuser' => 'Новий користувач?',
+                'createaccount' => 'Створити новий акаунт',
                 //registration//
-                'regname' => 'Full name',
-                'confirmpass' => 'Confirm password',
-                'agree' => 'i agree with terms',
-                'haveaccount' => 'Already have an account?',
-                'loghere' => 'Login here',
+                'regname' => 'Повне ім`я',
+                'confirmpass' => 'Підтвердити пароль',
+                'agree' => 'я погоджуюся з правилами',
+                'haveaccount' => 'Вже маєш акаунт?',
+                'loghere' => 'Перейти на вхід',
                 //menu//
-                'home' => 'Home',
-                'friends' => 'Friends',
-                'messages' => 'Messages',
-                'photos' => 'Photos',
-                'setting' => 'Account Settings',
+                'home' => 'Головна',
+                'friends' => 'Друзі',
+                'messages' => 'Повідомлення',
+                'photos' => 'Фотографії',
+                'setting' => 'Налаштування',
+                'exit' => 'Вихід',
                 //page//
-                'information' => 'Information',
-                'avatardrop' => 'Drop file here',
-                'name' => 'Name',
-                'lastname' => 'Lastname',
-                'wall' => 'Wall',
-                'leftpost' => 'Left your post here...',
-                'post' => 'Post',
-                'comment' => 'Comment...',
-                'send' => 'Send',
-                'gallery' => 'Gallery',
-                'drop' => 'Drop photos here to download',
-                'bg' => 'BACKGROUND COLOR:',
-                'usercolor' => 'user menu color:',
-                'userhover' => 'user menu hover color:',
-                'useractive' => 'user menu active color:',
-                'change' => 'Change',
-                'dialogmess' => 'Message...',
-                'changeavatar' => 'Change avatar',
-                'snapshot' => 'Snapshot',
-                'save' => 'Save'
+                'message' => 'Повідомлення',
+                'follow' => 'Підписатися',
+                'information' => 'Інформація',
+                'avatardrop' => 'Перетягніть файл сюди',
+                'name' => 'І`мя:',
+                'lastname' => 'Прізвище:',
+                'wall' => 'Стіна',
+                'leftpost' => 'Залишіть свій пост тут',
+                'post' => 'Відправити',
+                'comment' => 'Коментар...',
+                'send' => 'Відправити',
+                'gallery' => 'Галерея',
+                'drop' => 'Перетягніть фото для завантаження',
+                'bg' => 'Колір фону',
+                'usercolor' => 'Колір меню:',
+                'userhover' => 'Колір меню при наведенні:',
+                'useractive' => 'Колір меню при кліку:',
+                'change' => 'Застосувати',
+                'dialogmess' => 'Повідомлення...',
+                'changeavatar' => 'Змінити аватар',
+                'snapshot' => 'Сфотографувати',
+                'save' => 'Зберегти',
+                'settplaceholder' => 'Введіть колір (приклад #fff)',
+                'possible' => 'Рекомендовані',
+                'findfriends' => 'Знайти друзів...',
+                'val' => 'Значення',
+                'rules' => 'Правила використання нашої мережі',
+                'rules1' => 'Не лізь не в своє діло!',
+                'notfound' => 'Користувач не знайдений...'
             ];
         }
     }
@@ -621,5 +644,32 @@ class UserModel
         }
 
         return $result;
+    }
+
+    public static function getLanguage()
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->findOne(
+            [
+                '_id' => self::getUserId()
+            ],
+            [
+                'lng' => true
+            ]);
+        return $result['lng'];
+    }
+
+    public static function setLanguage($lng)
+    {
+        $db = Mdb::GetConnection();
+        $collection = $db->selectCollection(Mdb::$dbname, 'user');
+        $result = $collection->update(
+            [
+                '_id' => self::getUserId()
+            ],
+            [
+                '$set' => ['lng' => $lng]
+            ]);
     }
 }

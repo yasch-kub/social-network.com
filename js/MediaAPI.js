@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$('#avatarDropzone').popover({
 		html: true,
-		trigger: 'focus',
+		trigger: 'click',
 		title: 'Change avatar',
 		content: function () {
 			var context = '<div id="webcamTranslation" class="text-center">' +

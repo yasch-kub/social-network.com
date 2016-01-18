@@ -13,9 +13,9 @@
               timestamp="<? echo $timestamp?>"
               connect="/updateMessages/<? echo $chatId; ?>">
             <div class="input-group">
-                <input type="text" name="message" class="form-control" placeholder="Message...">
+                <input type="text" name="message" class="form-control" placeholder="<? echo $dictionary['dialogmess'] ?>">
                 <div class="input-group-btn">
-                    <button type="submit" class="btn btn-success form-control">Send</button>
+                    <button type="submit" class="btn btn-success form-control"><? echo $dictionary['send'] ?></button>
                 </div>
             </div>
         </form>

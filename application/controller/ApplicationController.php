@@ -5,7 +5,7 @@ class ApplicationController
     public static function ActionRules()
     {
         $id = UserModel::getUserId();
-
+        $dictionary = UserModel::getLangArray();
         $menuClass = [0 => 'active', 1 => '', 2 => '', 3 => '', 4 => '', 5 => ''];
         $view = 'templates/userProfile.php';
         $profile_content = 'templates/rules.php';

@@ -30,5 +30,6 @@
         'createChat/([0-9]+)' => 'user/createChat/$1',
         'rules' => 'application/rules',
         'findFriend' => 'user/findFriend',
+        'changeLang' => 'user/changeLang',
         '' => 'user/view'
     ];

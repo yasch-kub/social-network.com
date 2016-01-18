@@ -1,7 +1,7 @@
 <div class="row" id="featured">
     <div class="col-sm-12">
         <div class="page-header text-muted">
-            Information
+            <? echo $dictionary['information'] ?>
             <?php if ($id == UserModel::getUserId()):?>
                 <i class="fa fa-plus-square-o pull-right add-info-plus"></i>
             <?php endif; ?>
@@ -11,13 +11,13 @@
 
 <div class="row info-block">
     <div class="profile-property col-md-3">
-        Name:
+        <? echo $dictionary['name'] ?>
     </div>
     <div class="col-md-9">
         <? echo $user['name']; ?>
     </div>
     <div class="profile-property col-md-3">
-        LastName:
+        <? echo $dictionary['lastname'] ?>
     </div>
     <div class="col-md-9">
         <? echo $user['surname']; ?>
@@ -37,10 +37,10 @@
 
     <div class="add-information">
         <div class="col-md-3">
-            <input name="info" placeholder="information" class="form-control">
+            <input name="info" placeholder="<? echo $dictionary['information'] ?>" class="form-control">
         </div>
         <div class="col-md-3">
-            <input name="value" placeholder="value" class="form-control">
+            <input name="value" placeholder="<? echo $dictionary['val'] ?>" class="form-control">
         </div>
         <div class="col-md-4">
             <i class="fa fa-plus-square-o information-plus"></i>
@@ -51,7 +51,7 @@
 <div class="row" id="featured">
     <div class="col-sm-12">
         <div class="page-header text-muted">
-            Photos
+            <? echo $dictionary['photos'] ?>
         </div>
     </div>
 </div>
@@ -67,7 +67,7 @@
             <div class="row" id="featured">
                 <div class="col-sm-12">
                     <div class="page-header text-muted">
-                        Wall
+                        <? echo $dictionary['wall']; ?>
                     </div>
                 </div>
             </div>
@@ -77,8 +77,8 @@
                     <form id="postForm" class="form-horizontal well" role="form"
                           action="/addPost/<? echo $id; ?>">
                         <textarea name="message" class="form-control"
-                                  placeholder="Left your post here..."></textarea>
-                        <button class="btn btn-success pull-right" type="submit">Post</button>
+                                  placeholder="<? echo $dictionary['leftpost']; ?>"></textarea>
+                        <button class="btn btn-success pull-right" type="submit"><? echo $dictionary['post']; ?></button>
                     </form>
                 </div>
             </div>

@@ -7,7 +7,7 @@
         <?php foreach ($user['photos'] as $index => $photo):?>
             <div>
                 <a href="#" class="thumbnail">
-                    <img num="<? echo $index + 1; ?>" src="/application/data/users/<? echo $id; ?>/photos/<? echo $photo; ?>" alt="...">
+                    <img num="<? echo $index + 1; ?>" src="/application/data/users/<? echo $id; ?>/photos/<? echo $photo; ?>">
                 </a>
             </div>
         <?php endforeach ?>

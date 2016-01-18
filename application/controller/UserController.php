@@ -25,6 +25,120 @@ class UserController
         include_once(view . '/templates/template.php');
     }
 
+    public static function ActionProfile($id)
+    {
+        $dictionary = UserModel::getLangArray();
+        $menuClass = [0 => 'active', 1 => '', 2 => '', 3 => '', 4 => ''];
+        $userStyle = UserModel::getUserStyle();
+        $view = 'templates/userProfile.php';
+        $profile_content = 'templates/main.php';
+        $links = ['userProfile.css', 'webcam.css'];
+        $scripts = ['dragAndDropDownload.js', 'addPost.js', 'slider.js', 'addInform.js', 'MediaAPI.js', 'follow.js'];
+        $user = UserModel::getInfo($id);
+        $posts = UserModel::getPosts($id);
+
+        include_once(view . '/templates/template.php');
+    }
+
+    public static function ActionFriends($id)
+    {
+        $dictionary = UserModel::getLangArray();
+        $userStyle = UserModel::getUserStyle();
+        $menuClass = [0 => '', 1 => 'active', 2 => '', 3 => '', 4 => ''];
+        $user = UserModel::getInfo($id);
+        $photos = UserModel::getAllPhotos($id);
+        $followers = UserModel::getFollowersInfo($id);
+        $view = 'templates/userProfile.php';
+        $profile_content = 'templates/friends.php';
+        $links = ['userProfile.css', 'webcam.css', 'friends.css'];
+        $scripts = ['dragAndDropDownload.js', 'follow.js', 'MediaAPI.js', 'friends.js'];
+        include_once(view . '/templates/template.php');
+    }
+
+    public function actionMessages()
+    {
+        $dictionary = UserModel::getLangArray();
+        $userStyle = UserModel::getUserStyle();
+        $menuClass = [0 => '', 1 => '', 2 => 'active', 3 => '', 4 => ''];
+        $id = UserModel::getUserId();
+        $view = 'templates/userProfile.php';
+        $profile_content = 'templates/message.php';
+        $links = ['userProfile.css', 'messages.css', 'webcam.css'];
+        $scripts = ['dragAndDropDownload.js', 'follow.js', 'MediaAPI.js'];
+        $user = UserModel::getInfo($id);
+        $user['chats'] = [];
+        $chatsIds = UserModel::getChats();
+
+        for($i = 0; $i < count($chatsIds); $i++) {
+            $memberId = current(array_diff(ChatModel::getChatMembers($chatsIds[$i]), [UserModel::getUserId()]));
+            $member = UserModel::getAuthorPostInfoById($memberId);
+
+            $user['chats'][$i]['id'] = $chatsIds[$i];
+            $user['chats'][$i]['memberId'] = $memberId;
+            $user['chats'][$i]['memberName'] = $member['name'] . ' ' . $member['surname'];
+            $user['chats'][$i]['avatar'] = $member['avatar'][0];
+
+            $message = ChatModel::getLastChatMessage($chatsIds[$i]);
+            $message = $message['text'];
+            $user['chats'][$i]['lastMessage'] = $message;
+        }
+
+        // var_dump($user);
+
+        include_once(view . '/templates/template.php');
+    }
+
+    public static function ActionGallery($id)
+    {
+        $dictionary = UserModel::getLangArray();
+        $dictionary = UserModel::getLangArray();
+        $userStyle = UserModel::getUserStyle();
+        $menuClass = [0 => '', 1 => '', 2 => '', 3 => 'active', 4 => ''];
+        $user = UserModel::getInfo($id);
+        $photos = UserModel::getAllPhotos($id);
+        $view = 'templates/userProfile.php';
+        $profile_content = 'templates/gallery.php';
+        $links = ['gallery.css', 'userProfile.css', 'webcam.css'];
+        $scripts = ['gallery.js', 'dragAndDropDownload.js', 'MediaAPI.js', 'follow.js'];
+        include_once(view . '/templates/template.php');
+    }
+
+    public static function ActionAccountSetting(){
+        $dictionary = UserModel::getLangArray();
+        $menuClass = [0 => '', 1 => '', 2 => '', 3 => '', 4 => 'active'];
+        $id = UserModel::getUserId();
+        $userStyle = UserModel::getUserStyle();
+        $user = UserModel::getInfo($id);
+        $view = 'templates/userProfile.php';
+        $profile_content = 'templates/accountSetting.php';
+        $links = ['userProfile.css'];
+        $scripts = ['dragAndDropDownload.js', 'accountsetting.js'];
+        include_once(view . '/templates/template.php');
+    }
+
+    public static function actionDialog($chatId)
+    {
+        $dictionary = UserModel::getLangArray();
+        $menuClass = [0 => '', 1 => '', 2 => 'active', 3 => '', 4 => ''];
+        $userStyle = UserModel::getUserStyle();
+        $id = UserModel::getUserId();
+        $user = UserModel::getInfo($id);
+        $messages = ChatModel::getChatMessages($chatId);
+
+        if (ChatModel::isUserInChat($chatId, UserModel::getUserId()))
+        {
+            $lastMessage = end($messages);
+            $timestamp = $lastMessage['timestamp'];
+            $view = 'templates/userProfile.php';
+            $profile_content = 'templates/dialog.php';
+            $links = ['userProfile.css', 'dialog.css', 'webcam.css'];
+            $scripts = ['dragAndDropDownload.js', 'follow.js', 'messager.js', 'MediaAPI.js'];
+            include_once(view . '/templates/template.php');
+        }
+        else
+            header('Location: /rules');
+    }
+
     public static function ActionAddUser()
     {
         $result = UserModel::AddUser($_POST['reg_fullname'], $_POST['reg_email'], $_POST['reg_password']);
@@ -39,20 +153,6 @@ class UserController
             exit(json_encode(true));
         } else
             exit(json_encode(false));
-    }
-
-    public static function ActionProfile($id)
-    {
-        $menuClass = [0 => 'active', 1 => '', 2 => '', 3 => '', 4 => ''];
-        $userStyle = UserModel::getUserStyle();
-        $view = 'templates/userProfile.php';
-        $profile_content = 'templates/main.php';
-        $links = ['userProfile.css', 'webcam.css'];
-        $scripts = ['dragAndDropDownload.js', 'addPost.js', 'slider.js', 'addInform.js', 'MediaAPI.js', 'follow.js'];
-        $user = UserModel::getInfo($id);
-        $posts = UserModel::getPosts($id);
-
-        include_once(view . '/templates/template.php');
     }
 
     public static function ActionChangeAvatar()
@@ -77,6 +177,7 @@ class UserController
 
     public static function ActionAddPost($userId)
     {
+        $dictionary = UserModel::getLangArray();
         $id = $userId;
         $post = UserModel::addPost(self::clear($_POST['message']), $userId);
         include_once(view . 'templates/post.php');
@@ -89,33 +190,6 @@ class UserController
         exit(json_encode(UserModel::getPhotosByNum($data['id'], $data['num'], $data['direction'])));
     }
 
-    public static function ActionGallery($id)
-    {
-        $userStyle = UserModel::getUserStyle();
-        $menuClass = [0 => '', 1 => '', 2 => '', 3 => 'active', 4 => ''];
-        $user = UserModel::getInfo($id);
-        $photos = UserModel::getAllPhotos($id);
-        $view = 'templates/userProfile.php';
-        $profile_content = 'templates/gallery.php';
-        $links = ['gallery.css', 'userProfile.css', 'webcam.css'];
-        $scripts = ['gallery.js', 'dragAndDropDownload.js', 'MediaAPI.js', 'follow.js'];
-        include_once(view . '/templates/template.php');
-    }
-
-    public static function ActionFriends($id)
-    {
-        $userStyle = UserModel::getUserStyle();
-        $menuClass = [0 => '', 1 => 'active', 2 => '', 3 => '', 4 => ''];
-        $user = UserModel::getInfo($id);
-        $photos = UserModel::getAllPhotos($id);
-        $followers = UserModel::getFollowersInfo($id);
-        $view = 'templates/userProfile.php';
-        $profile_content = 'templates/friends.php';
-        $links = ['userProfile.css', 'webcam.css', 'friends.css'];
-        $scripts = ['dragAndDropDownload.js', 'follow.js', 'MediaAPI.js', 'friends.js'];
-        include_once(view . '/templates/template.php');
-    }
-
     public static function ActionAddInfo(){
         $data = file_get_contents('php://input');
         $data = json_decode($data, true);
@@ -124,6 +198,7 @@ class UserController
 
     public static function ActionAddComment($userId, $postId)
     {
+
         $comment = self::clear($_POST['comment']);
         $comment = UserModel::addPostComment($userId, $postId, $comment);
 
@@ -155,60 +230,6 @@ class UserController
             exit ('ok');
         else
             exit('fail');
-    }
-
-    public function actionMessages()
-    {
-        $userStyle = UserModel::getUserStyle();
-        $menuClass = [0 => '', 1 => '', 2 => 'active', 3 => '', 4 => ''];
-        $id = UserModel::getUserId();
-        $view = 'templates/userProfile.php';
-        $profile_content = 'templates/message.php';
-        $links = ['userProfile.css', 'messages.css', 'webcam.css'];
-        $scripts = ['dragAndDropDownload.js', 'follow.js', 'MediaAPI.js'];
-        $user = UserModel::getInfo($id);
-        $user['chats'] = [];
-        $chatsIds = UserModel::getChats();
-
-        for($i = 0; $i < count($chatsIds); $i++) {
-            $memberId = current(array_diff(ChatModel::getChatMembers($chatsIds[$i]), [UserModel::getUserId()]));
-            $member = UserModel::getAuthorPostInfoById($memberId);
-
-            $user['chats'][$i]['id'] = $chatsIds[$i];
-            $user['chats'][$i]['memberId'] = $memberId;
-            $user['chats'][$i]['memberName'] = $member['name'] . ' ' . $member['surname'];
-            $user['chats'][$i]['avatar'] = $member['avatar'][0];
-
-            $message = ChatModel::getLastChatMessage($chatsIds[$i]);
-            $message = $message['text'];
-            $user['chats'][$i]['lastMessage'] = $message;
-        }
-
-       // var_dump($user);
-
-        include_once(view . '/templates/template.php');
-    }
-
-    public static function actionDialog($chatId)
-    {
-        $menuClass = [0 => '', 1 => '', 2 => 'active', 3 => '', 4 => ''];
-        $userStyle = UserModel::getUserStyle();
-        $id = UserModel::getUserId();
-        $user = UserModel::getInfo($id);
-        $messages = ChatModel::getChatMessages($chatId);
-
-        if (ChatModel::isUserInChat($chatId, UserModel::getUserId()))
-        {
-            $lastMessage = end($messages);
-            $timestamp = $lastMessage['timestamp'];
-            $view = 'templates/userProfile.php';
-            $profile_content = 'templates/dialog.php';
-            $links = ['userProfile.css', 'dialog.css', 'webcam.css'];
-            $scripts = ['dragAndDropDownload.js', 'follow.js', 'messager.js', 'MediaAPI.js'];
-            include_once(view . '/templates/template.php');
-        }
-        else
-            header('Location: /rules');
     }
 
     public static function ActionSaveWebCamImage()
@@ -302,9 +323,9 @@ class UserController
         $name = $name[0];
 
         $followers = UserModel::findUser($name, $surname, 1);
-
+        $dictionary = UserModel::getLangArray();
         if (empty($followers))
-            exit('User was not found...');
+            exit($dictionary['notfound']);
         foreach($followers as $follower)
             include view . 'templates/friend.php';
 
@@ -328,7 +349,6 @@ class UserController
             exit('ok');
 
         exit('failed');
-
     }
 
     public static function ActionDellPhotos()
@@ -338,20 +358,7 @@ class UserController
         unlink(root . '/application/data/users/'. UserModel::getUserId() .'/photos/'.$data);
         if(UserModel::delletePhoto($data))
             exit('ok');
-
         exit('failed');
-    }
-
-    public static function ActionAccountSetting(){
-        $menuClass = [0 => '', 1 => '', 2 => '', 3 => '', 4 => 'active'];
-        $id = UserModel::getUserId();
-        $userStyle = UserModel::getUserStyle();
-        $user = UserModel::getInfo($id);
-        $view = 'templates/userProfile.php';
-        $profile_content = 'templates/accountSetting.php';
-        $links = ['userProfile.css'];
-        $scripts = ['dragAndDropDownload.js', 'accountsetting.js'];
-        include_once(view . '/templates/template.php');
     }
 
     public static function ActionChangeUserStyle()
@@ -361,7 +368,6 @@ class UserController
 
         if(UserModel::setUserStyle($data))
             exit('ok');
-
         exit('failed');
     }
 
@@ -370,5 +376,11 @@ class UserController
         if(UserModel::revertStyle())
             exit('ok');
         exit('failed');
+    }
+
+    public static function ActionChangeLang()
+    {
+        $lang = file_get_contents('php://input');
+        UserModel::setLanguage($lang);
     }
 }

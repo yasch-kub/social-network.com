@@ -1,7 +1,7 @@
 <div class="row" id="featured">
     <div class="col-sm-12">
         <div class="page-header text-muted">
-            Friends
+            <? echo $dictionary['friends'] ?>
         </div>
     </div>
 </div>
@@ -19,7 +19,7 @@
 <div class="row" id="featured">
     <div class="col-sm-12">
         <div class="page-header text-muted">
-            Possible friend
+            <? echo $dictionary['possible'] ?>
         </div>
     </div>
 </div>
@@ -27,7 +27,7 @@
 <div class="row">
     <form role="form" id="friendSearchForm" class="center-block" method='post' action="/findFriend">
         <div class="input-group">
-            <input type="text" name="name" class="form-control" placeholder="Find friends...">
+            <input type="text" name="name" class="form-control" placeholder="<? echo $dictionary['findfriends'] ?>">
             <div class="input-group-btn">
                 <button type="submit" class="btn btn-default form-control"><i class="fa fa-search"></i></button>
             </div>

@@ -1,14 +1,14 @@
 <div class="row" id="featured">
     <div class="col-sm-12">
         <div class="page-header text-muted">
-            Gallery
+            <? echo $dictionary['gallery'] ?>
         </div>
     </div>
 </div>
 <?php if($id == UserModel::getUserId()): ?>
     <div id="galleryDropZone">
         <span>
-            Drop photos here to download
+            <? echo $dictionary['drop'] ?>
         </span>
     </div>
 <?php endif; ?>

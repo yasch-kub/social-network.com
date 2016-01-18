@@ -28,9 +28,10 @@
     <div class="row comment-box">
         <form role="form" id="postCommentForm" action="/addComment/<? echo $id . '/' . $post['id']; ?>">
             <div class="input-group">
-                <input type="text" name="comment" class="form-control" aria-label="..." placeholder="Comment...">
+                <input type="text" name="comment" class="form-control" aria-label="..."
+                       placeholder="<? echo $dictionary['comment'] ?>">
                 <div class="input-group-btn">
-                    <button type="submit" class="btn btn-success form-control">Send</button>
+                    <button type="submit" class="btn btn-success form-control"><? echo $dictionary['send'] ?></button>
                 </div>
             </div>
         </form>
